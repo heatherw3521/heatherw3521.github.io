@@ -17,15 +17,15 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.75; transition: background 0.2s, color 0.2s; }
+  body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: var(--text); font-size: 18px; line-height: 1.75; transition: background 0.2s, color 0.2s; }
   a { color: var(--link); text-decoration: none; }
   a:hover { color: var(--link-hover); text-decoration: underline; }
 
   nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px; transition: background 0.2s, border-color 0.2s; }
-  .nav-name { font-weight: 500; font-size: 14px; letter-spacing: 0.02em; color: var(--text); text-decoration: none; }
+  .nav-name { font-weight: 500; font-size: 18px; letter-spacing: 0.02em; color: var(--text); text-decoration: none; }
   .nav-right { display: flex; align-items: center; gap: 1.5rem; }
   .nav-links { display: flex; gap: 1.5rem; list-style: none; }
-  .nav-links a { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .nav-links a { font-size: 16px; color: var(--muted); letter-spacing: 0.04em; }
   .nav-links a:hover { color: var(--text); text-decoration: none; }
   .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 3px 8px; transition: border-color 0.15s, color 0.15s; display: flex; align-items: center; gap: 5px; }
   .theme-toggle:hover { color: var(--text); border-color: var(--text); }
@@ -36,16 +36,16 @@
   .hero-photo { width: 230px; height: 300px; border-radius: 4px; object-fit: cover; }
   .hero-photo-placeholder { width: 148px; height: 148px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
   h1 { font-weight: 500; font-size: 22px; letter-spacing: -0.01em; margin-bottom: 0.35rem; }
-  .hero-affil { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; letter-spacing: 0.01em; }
-  .hero-bio { font-family: 'IBM Plex Serif', serif; font-size: 14.5px; line-height: 1.8; margin-bottom: 1.25rem; }
+  .hero-affil { font-size: 16px; color: var(--muted); margin-bottom: 1.25rem; letter-spacing: 0.01em; }
+  .hero-bio { font-family: 'IBM Plex Serif', serif; font-size: 16px; line-height: 1.8; margin-bottom: 1.25rem; }
   .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .hero-links a { font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 2px; transition: border-color 0.15s, color 0.15s; }
+  .hero-links a { font-size: 14px; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 2px; transition: border-color 0.15s, color 0.15s; }
   .hero-links a:hover { color: var(--text); border-color: var(--text); text-decoration: none; }
 
   section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
   section:last-child { border-bottom: none; }
-  h2 { font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.75rem; }
-  h3 { font-weight: 500; font-size: 13px; letter-spacing: 0.04em; color: var(--muted); margin: 2rem 0 0.85rem; text-transform: lowercase; }
+  h2 { font-weight: 500; font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.75rem; }
+  h3 { font-weight: 500; font-size: 18px; letter-spacing: 0.04em; color: var(--muted); margin: 2rem 0 0.85rem; text-transform: lowercase; }
   h3:first-child { margin-top: 0; }
 
   .prose { font-family: 'IBM Plex Serif', serif; font-size: 14.5px; line-height: 1.85; }
@@ -57,28 +57,28 @@
   .mascot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0.75rem;justify-content: center; }
   .mascot-photo { width: 80%; aspect-ratio: 1.5 / 1; border-radius: 3px; object-fit: cover; display: block; }
   .mascot-placeholder { width: 80%; aspect-ratio: 1.5 / 1; border-radius: 3px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
-  .mascot-caption { text-align: center; font-size: 12px; color: var(--muted); letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; }
+  .mascot-caption { text-align: center; font-size: 16px; color: var(--muted); letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; }
 
   /* Projects */
   .project-item { display: grid; grid-template-columns: 200px 1fr; gap: 1.75rem; padding: 1.75rem 0; border-top: 1px solid var(--border); align-items: start; }
   .project-item:first-child { border-top: none; padding-top: 0; }
   .project-photo { width: 200px; height: 220px; border-radius: 3px; object-fit: cover; }
   .project-photo-placeholder { width: 200px; height: 220px; border-radius: 3px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; flex-shrink: 0; }
-  .project-title { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 14px; margin-bottom: 0.6rem; color: var(--text); }
-  .project-desc { font-family: 'IBM Plex Serif', serif; font-size: 13.5px; line-height: 1.8; color: var(--muted); margin-bottom: 0.85rem; }
+  .project-title { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 18px; margin-bottom: 0.6rem; color: var(--text); }
+  .project-desc { font-family: 'IBM Plex Serif', serif; font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 0.85rem; }
   .project-links { list-style: none; }
-  .project-links li { font-size: 12.5px; padding: 0.3rem 0; border-top: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.5rem; }
+  .project-links li { font-size: 14px; padding: 0.3rem 0; border-top: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.5rem; }
   .project-links li:first-child { border-top: none; padding-top: 0; }
-  .project-links li::before { content: "→"; color: var(--muted); font-size: 11px; flex-shrink: 0; }
+  .project-links li::before { content: "→"; color: var(--muted); font-size: 14px; flex-shrink: 0; }
 
   /* Papers */
   .paper-list { list-style: none; }
   .paper-list li { padding: 0.85rem 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; font-size: 13.5px; line-height: 1.65; }
   .paper-list li:first-child { border-top: none; padding-top: 0; }
-  .paper-venue { font-style: italic; color: var(--muted); font-size: 12px; }
-  .paper-link { font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .paper-venue { font-style: italic; color: var(--muted); font-size: 14px; }
+  .paper-link { font-size: 14px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
   .paper-link:hover { color: var(--text); border-color: var(--text); text-decoration: none; }
-  .paper-status { font-size: 11px; color: var(--muted); background: var(--surface); padding: 2px 6px; border-radius: 2px; margin-left: 6px; }
+  .paper-status { font-size: 14px; color: var(--muted); background: var(--surface); padding: 2px 6px; border-radius: 2px; margin-left: 6px; }
 
   /* Accessibility */
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -203,7 +203,7 @@
     <main class="prose">
       <p>My research group includes several UW PhD students. <b>Wietse Vaes</b> is working on PDE solvers for waves and scattering. <b>Arjun Sethi-Olowin</b> is working on hierarchical methods for optimization problems. <b>Emily Zhang</b> and <b>Levent Batakci</b> are working on rational approximation in computation, and <b>Laura Thomas</b> is working on computational methods and approximation theory for pseudospectra in matrix pencils. <b>Jenny Green</b> is working with me on hierarchical structures in transform matrices, and <b>Sejal Gupta</b> is working with me on low rank structures in dynamical systems. <b>Bryce Parry</b>, a UW M.S. student, is working with me on quadrature methods for singular integrals. <b>Raaga Vangala</b> is a U.W. undergraduate working with me on Zolotarev rational approximation problems.</p>
       <p>If you are any PhD student at UW looking for a GSR, please don't hesitate to reach out — I love hearing about what students in applied computational fields are working on, and am happy to serve on committees outside applied math as well.</p>
-      <p>I do not currently have research positions available for PhD, M.S., or undergraduate students. Check in next quarter.</p>
+      <p><b>I do not currently have research positions available for PhD, M.S., or undergraduate students.</b> Check in next quarter.</p>
     </main>
 
     <figure class="mascots" aria-label="Unofficial mascots">
