@@ -1,645 +1,424 @@
-<!DOCTYPE HTML>
-<!--
-	Read Only by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Heather Wilber</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-	</head>
-	<body>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heather Wilber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root, [data-theme="light"] {
+    --bg: #fafaf8; --surface: #f2f1ed; --border: #d8d7d1;
+    --text: #1a1917; --muted: #6b6a65; --link: #2d5a8e; --link-hover: #1a3a5c;
+  }
+  [data-theme="dark"] {
+    --bg: #141412; --surface: #1e1d1b; --border: #2e2d2a;
+    --text: #e8e7e2; --muted: #888780; --link: #7aabdb; --link-hover: #a8c8e8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.75; transition: background 0.2s, color 0.2s; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { color: var(--link-hover); text-decoration: underline; }
 
-		<!-- Header -->
-			<section id="header">
-				<header>
-					<span class="image avatar"><img src="me.jpg" alt="" /></span>
-					<h1 id="logo"><a href="CV2023.pdf">Heather Wilber</a></h1>
-					<p>University of Washington
-					</p>
+  nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px; transition: background 0.2s, border-color 0.2s; }
+  .nav-name { font-weight: 500; font-size: 14px; letter-spacing: 0.02em; color: var(--text); text-decoration: none; }
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .nav-links a:hover { color: var(--text); text-decoration: none; }
+  .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 3px 8px; transition: border-color 0.15s, color 0.15s; display: flex; align-items: center; gap: 5px; }
+  .theme-toggle:hover { color: var(--text); border-color: var(--text); }
 
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
 
-				</header>
-				<nav id="nav">
-					<ul>
-						<li><a href="#one" class="active">About</a></li>
-                        <li><a href="#two">Student Info</a></li>
-						<li><a href="#three">Research</a></li>
-						<li><a href="#four">Awards and Fellowships</a></li>
-						<li><a href="#five">Teaching</a></li>
-						<li><a href="#six">Contact</a></li>
-					</ul>
-				</nav>
-				<footer>
-					<ul class="icons">
-						<!--<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>-->
-						<!--<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>-->
-						<!--<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>-->
-						<!--<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>-->
-					</ul>
-				</footer>
-			</section>
+  .hero { padding: 4rem 0 3rem; display: grid; grid-template-columns: 1fr 148px; gap: 3rem; align-items: start; border-bottom: 1px solid var(--border); }
+  .hero-photo { width: 148px; height: 185px; border-radius: 4px; object-fit: cover; }
+  .hero-photo-placeholder { width: 148px; height: 148px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
+  h1 { font-weight: 500; font-size: 22px; letter-spacing: -0.01em; margin-bottom: 0.35rem; }
+  .hero-affil { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; letter-spacing: 0.01em; }
+  .hero-bio { font-family: 'IBM Plex Serif', serif; font-size: 14.5px; line-height: 1.8; margin-bottom: 1.25rem; }
+  .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-links a { font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 2px; transition: border-color 0.15s, color 0.15s; }
+  .hero-links a:hover { color: var(--text); border-color: var(--text); text-decoration: none; }
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+  section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+  h2 { font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.75rem; }
+  h3 { font-weight: 500; font-size: 13px; letter-spacing: 0.04em; color: var(--muted); margin: 2rem 0 0.85rem; text-transform: lowercase; }
+  h3:first-child { margin-top: 0; }
 
-				<!-- Main -->
-					<div id="main">
+  .prose { font-family: 'IBM Plex Serif', serif; font-size: 14.5px; line-height: 1.85; }
+  .prose p { margin-bottom: 1rem; }
+  .prose p:last-child { margin-bottom: 0; }
 
-						<!-- One -->
-							<section id="one">
-								<div class="container">
-									<header class="major">
-										<h2>Welcome!</h2>
-										<!--<p>About me:</p>-->
-									</header>
-									<!--<a href="#" class="image"><img src="images/avatar.jpg" alt="" />-->
-									<p> Hello! I am an assistant professor in the Applied Mathematics Department at the University of Washington. Broadly speaking, my research considers the intersection of approximation theory, numerical linear algebra, and scientific computing. My projects involve the development and analysis of fast direct methods for solving PDEs via hierarchical numerical linear algebra, low rank and rank-structured approximation methods, boundary integral equation methods, numerical methods for computing with polynomial approximations to functions, and robust numerical methods for constructing and computing with rational approximations to functions.</p>
+  /* Mascots */
+  .mascots { margin-top: 2.5rem; }
+  .mascot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0.75rem;justify-content: center; }
+  .mascot-photo { width: 100%; aspect-ratio: 1 / 1; border-radius: 3px; object-fit: cover; display: block; }
+  .mascot-placeholder { width: 100%; aspect-ratio: 1 / 1; border-radius: 3px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
+  .mascot-caption { text-align: center; font-size: 12px; color: var(--muted); letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; }
 
-									<h3><center><p><a href="H_Wilber_CV_short.pdf"> CV (pdf)</a></p></h3></center>
-											 <!--<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>-->
-											 <!--<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>-->
-											 <!--<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
-											 <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>-->
-										 <!--</ul></h3>-->
-										<!--<p><b>CV: </b><a href="CV.pdf">  (pdf)</a></p>-->
-								<!--<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer non. Adipiscing cubilia elementum integer. Integer eu ante ornare amet commetus.</p>-->
-								<!--<article>
-									<!--<a href="#" class="image"><img src="images/pic02.jpg" alt="" /></a>-->
-										<!--<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer adipiscing ornare amet.</p>
-									</div>--?
-								<!--</article>-->
-							</div>
-							</section>
+  /* Projects */
+  .project-item { display: grid; grid-template-columns: 200px 1fr; gap: 1.75rem; padding: 1.75rem 0; border-top: 1px solid var(--border); align-items: start; }
+  .project-item:first-child { border-top: none; padding-top: 0; }
+  .project-photo { width: 200px; height: 148px; border-radius: 3px; object-fit: cover; }
+  .project-photo-placeholder { width: 200px; height: 148px; border-radius: 3px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; flex-shrink: 0; }
+  .project-title { font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 14px; margin-bottom: 0.6rem; color: var(--text); }
+  .project-desc { font-family: 'IBM Plex Serif', serif; font-size: 13.5px; line-height: 1.8; color: var(--muted); margin-bottom: 0.85rem; }
+  .project-links { list-style: none; }
+  .project-links li { font-size: 12.5px; padding: 0.3rem 0; border-top: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.5rem; }
+  .project-links li:first-child { border-top: none; padding-top: 0; }
+  .project-links li::before { content: "→"; color: var(--muted); font-size: 11px; flex-shrink: 0; }
 
-<section id="two">
-									<div class="container">
-										<h3>Working with me</h3>
-										<p>
-										My research group includes several UW PhD students.  
- Wietse Vaes is working with me on PDE solvers for waves and scattering phenomena. Arjun Sethi-Olowin is working on hierarchical methods for optimization problems. Emily Zhang and Levent Batakci are working on rational approximation in computation, and Laura Thomas is working with me on computational methods and approximation theory for matrix pencils. I am also currently working with UW undergraduate Raaga Vangala on Zolotarev rational approximation problems for applications in scientific computing.</p>
+  /* Papers */
+  .paper-list { list-style: none; }
+  .paper-list li { padding: 0.85rem 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; font-size: 13.5px; line-height: 1.65; }
+  .paper-list li:first-child { border-top: none; padding-top: 0; }
+  .paper-venue { font-style: italic; color: var(--muted); font-size: 12px; }
+  .paper-link { font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; white-space: nowrap; transition: border-color 0.15s, color 0.15s; }
+  .paper-link:hover { color: var(--text); border-color: var(--text); text-decoration: none; }
+  .paper-status { font-size: 11px; color: var(--muted); background: var(--surface); padding: 2px 6px; border-radius: 2px; margin-left: 6px; }
 
-<p>If you are a PhD student in applied math or related fields at UW looking to work on topics related to boundary integral methods and scattering, hierarchical numerical linear algebra, or approximation theory, please send me an email about arranging a reading quarter, and let me know which area you are interested in and why. The reading course is an essential first step to joining my research group.</p>
+  /* Accessibility */
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-<p>If you are any PhD student at UW looking for a GSR, please don't hesitate to ask! I love serving as a GSR and am especially interested in hearing about what students in applied fields using computational mathematics are up to. I am happy to serve on committees unrelated to applied math as well.</p>
+  .event-list { list-style: none; }
+  .event-list li { display: grid; grid-template-columns: 100px 1fr; gap: 1rem; padding: 0.6rem 0; border-top: 1px solid var(--border); font-size: 13.5px; align-items: start; }
+  .event-list li:first-child { border-top: none; padding-top: 0; }
+  .event-date { color: var(--muted); font-size: 12px; }
+  .event-venue { color: var(--muted); font-size: 12px; }
 
-<p>Unfortunately, I currently do not have any research-related positions available for M.S. or undergraduate students. Check in next quarter to see if the situation has evolved!</p>
+  .software-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .software-card { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 0.75rem 1rem; }
+  .software-card a { font-weight: 500; font-size: 13px; display: block; margin-bottom: 3px; }
+  .software-card p { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
 
+  .award-list { list-style: none; }
+  .award-list li { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: 0.55rem 0; border-top: 1px solid var(--border); font-size: 13.5px; align-items: baseline; }
+  .award-list li:first-child { border-top: none; padding-top: 0; }
+  .award-year { font-size: 12px; color: var(--muted); }
 
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .contact-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .contact-val { font-family: 'IBM Plex Serif', serif; font-size: 14px; line-height: 1.7; }
 
+  .pres-list { list-style: none; }
+  .pres-list li { padding: 0.55rem 0; border-top: 1px solid var(--border); font-size: 13.5px; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .pres-list li:first-child { border-top: none; padding-top: 0; }
 
-										<!--<p>Integer eu anteLornare amet commetus vestibulum blandit integer in curae ac faucibus integer non. Adipiscing cubilia elementum integer lorem ipsum dolor sit amet.</p>
-										<ul class="feature-icons">
-											<li class="fa-code">Papers</li>
-											<li class="fa-cubes">Software</li>-->
-											<!--<li class="fa-book">Talks</li>
-											<li class="fa-coffee">Drink much coffee</li>
-											<li class="fa-bolt">Lightning bolt</li>
-											<li class="fa-users">Shadow clone technique</li>-->
-										<!--</ul>-->
-									</div>
-								</section>
+  .small-note { font-size: 12px; color: var(--muted); margin-top: 0.75rem; }
+  footer { padding: 2rem; text-align: center; font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
 
+<nav>
+  <a href="#" class="nav-name">Heather Wilber</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#students">students</a></li>
+      <li><a href="#research">papers</a></li>
+      <li><a href="#awards">awards</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <span id="themeIcon">○</span>
+      <span id="themeLabel">dark</span>
+    </button>
+  </div>
+</nav>
 
-						<!-- Two -->
-							<section id="three">
-								<div class="container">
-									<h3>Research</h3>
-								<div class="features">
-										<article>
-											<!--<a href="#" class="image"><img src="images/pic01.jpg" alt="" /></a>-->
-											<div class="container">
-												<h4>Papers</h4>
-<ul>
-<li>M.A. Gilles, H.Wilber, Low-rank approximation by randomly pivoted LU <i>submitted to SIMAX,</i> <a href="https://arxiv.org/abs/2601.22344">(pdf)</a></li>
-<li>H. Wilber, W. Vaes, A. Gopal and P.G. Martinsson, A time-frequency method for acoustic scattering with trapping <i>submitted to J. of Comp. Phys.,</i> <a href="https://arxiv.org/abs/2506.15165">(pdf)</a></li>
-<li>C. Ballew, T. Trogdon, and H. Wilber, The Akhiezer iteration and an inverse-free solver for Sylvester matrix equations <i>submitted to IMA J. of Num. Analysis,</i> <a href="https://arxiv.org/abs/2503.17496">(pdf)</a></li>												
-<li>B. Beckermann, D. Kressner, and H. Wilber, Compression properties for large Toeplitz-like matrices, <i>Num. Algorithms 100.4 (2025), 2041-2067.</i> <a href="https://arxiv.org/abs/2502.09823">(pdf)</a></li>
-												<li>L.N. Trefethen, H. Wilber, Computation of Zolotarev rational functions, <i>SISC 47.4 (2025), A2205-A2220.</i> <a href="https://arxiv.org/abs/2408.14092">(pdf)</a></li>	
-												<li>H. Wilber, E.N. Epperly, and A.H. Barnett, A superfast direct inversion method for the nonuniform discrete Fourier transform, <i>SISC, 47.3 (2025), A1702-A1732, </i> <a href="https://arxiv.org/abs/2404.13223">(pdf)</a></li>													
-												<li>H. Wilber, A. Damle, and A. Townsend, Data-driven algorithms for signal processing with trigonometric rational functions, <i>SISC, 44-3 (2022), C185-C209 </i> <a href="https://arxiv.org/pdf/2105.07324.pdf">(pdf)</a></li>
-												<li>D. Rubin, A. Townsend,and H. Wilber, Bounding Zolotarev numbers using Faber rational functions, <i>Const. Approx., 56 (2022), 1-26 </i> <a href="https://arxiv.org/abs/1911.11882">(pdf)</a></li>
-												<li>Quinn, K., Wilber, H., Townsend, A., Sethna, J.P., Chebyshev approximation and the global geometry of model predictions, <i>Phy. Rev. Let. (2019), 122(15), 158302.</i> <a href="https://www.researchgate.net/publication/332520214_Chebyshev_Approximation_and_the_Global_Geometry_of_Model_Predictions">(pdf)</a></li>
-												<li>A. Townsend and H. Wilber, On the singular values of matrices with high displacement rank, <i>LAA, 548 (2018), 19-41.</i> <a href="https://arxiv.org/abs/1712.05864">(pdf)</a></li>
-												<li>H. Wilber, A. Townsend, and G. B. Wright, Computing with functions in spherical and polar geometries II. The disk, <i>SISC, 39 (2017), C238-C262.</i> <a href="https://arxiv.org/abs/1604.03061">(pdf)</a></li>
-												<li>A. Townsend, H. Wilber, and G. B. Wright, Computing with functions in spherical and polar geometries I. The sphere, <i>SISC, 38 (2016), C403-C425.</i> <a href="https://arxiv.org/abs/1510.08094">(pdf)</a></li>
-											</ul>
-											<h4>Theses</h4>
-											<ul>
-											<li>M.S. <a class="icons"><a href="msc_thesis.pdf" class="icon fa-file-text-o"> <span class="label"></span></a></a><a href="msc_thesis.pdf">(pdf)</a></li>
-											<li>PhD <a class="icons"><a href="phd_thesis.pdf" class="icon fa-file-text-o"> <span class="label"></span></a></a><a href="phd_thesis.pdf">(pdf)</a></li>
-										</ul>
-											</div>
-										</article>
-										<article>
-											<!--<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>-->
-											<div class="container">
-												<h4>Upcoming Conferences, Visits, Talks</h4>
-												<h3></h3>
-												<ul>
-												<li>May 18-22, 2026: <a href="https://ilas2026.math.vt.edu/">27th Conference of the ILAS.</a> (Blacksburg, VA) </li>
-												<li>March 17-20, 2026: <a href="https://berkeleyams.lbl.gov/spring26/">Berkeley Applied Mathematics Seminar</a> (Berkeley, CA) </li>
-												<li>March 1-6, 2026: <a href="https://www.birs.ca/events/2026/5-day-workshops/26w5567">BIRS Workshop: Women in computational methods for PDEs.</a> (Banff, CA) </li>
-                                                <li>Sept 14-20, 2025: <a href="https://www.mittag-leffler.se/activities/interfaces-and-unfitted-discretization-methods/#program">Mittag-Leffler Program: Interfaces and Unfitted Discretizations</a> (Djursholm, Sweden) </li>
-											</ul>
-											</div>
-											<div class="container">
-												<h4>Selected Presentations</h4>
-												<h3></h3>
-												<ul>
-												(click <a href="H_Wilber_CV_short.pdf">here</a> for complete list.)
-                                                <li>Zolotarev numbers and the nonuniform discrete Fourier transform. <a href="Princeton2024.pdf">(slides)</a></li>
-												<li>REfit:Data-driven computing with trigonometric rationals. <a href="REFIT_POSTER_all.pdf">(poster)</a></li>
-												<li>Low rank numerical methods via rational approximation. <a href="CAvid.pdf">(slides)</a></li>
-												<li>Computing with rational approximations in signal processing. <a href="rising.pdf">(slides)</a></li>
-												<li>Numerical computing with functions in polar and spherical geometries. <a href="SSWC.pdf">(slides)</a></li>
-												<li>Computing with functions on the sphere and disk. <a href="poster.pdf">(poster)</a></li>
-											</ul>
-											</div>
-										</article>
-										<article>
-											<!--<a href="#" class="image"><img src="images/pic02.jpg" alt="" /></a>-->
-											<div class="container">
-												<h4>Software</h4>
-												<ul>
-												<li><a href="https://github.com/heatherw3521/structmats">Structmats </a>(Computing with structured matrices)  <!--<a href=>(poster)</a>--></li>	
-												<li><a href="https://github.com/heatherw3521/REfit">REfit </a>(computing with rational functions and exponential sums)  <!--<a href=>(poster)</a>--></li>
-												<li><a href="https://github.com/ajt60gaibb/freeLYAP">FI-ADI </a>(low rank solver for Sylvester matrix equations)  <!--<a href=>(poster)</a>--></li>
-												<li><a href="http://www.chebfun.org/docs/guide/guide16.html">Diskfun</a> (computing with functions on the unit disk) </li>
-												<li><a href="http://www.chebfun.org/docs/guide/guide17.html">Spherefun</a> (computing with functions on the unit sphere) </li>
-											</ul>
+<div class="container">
 
-											</div>
-										</article>
-									</div>
-								</div>
-							</section>
+  <!-- ═══ HERO ═══ -->
+  <div class="hero" id="about">
+    <div>
+      <h1>Heather Wilber</h1>
+      <p class="hero-affil">Assistant Professor · Applied Mathematics · University of Washington</p>
+      <p class="hero-bio">My research sits at the intersection of approximation theory, numerical linear algebra, and scientific computing. I develop and analyze fast direct methods for solving PDEs via hierarchical numerical linear algebra, low-rank and rank-structured approximation, boundary integral equation methods, and robust numerical methods for nonlinear approximations to functions.</p>
+      <div class="hero-links">
+        <a href="https://heatherw3521.github.io/H_Wilber_CV_short.pdf">CV <span class="sr-only">(PDF)</span></a>
+        <a href="mailto:hdw27@uw.edu">email</a>
+      </div>
+    </div>
+    <!-- TO ADD PHOTO: replace the div below with:
+          -->
+    <img src="me.jpg" alt="Picture of a woman smiling" class="hero-photo">
+  </div>
 
-							<!-- Three -->
-								<section id="four">
-									<div class="container">
-										<h3>Awards and Fellowships</h3>
-										<ul>
-											(click <a href="H_Wilber_CV_short.pdf">here</a> for complete list.)
-											<li>Householder Prize (2022)</li>
-											<li>AWM 2022 Dissertation Prize</li>
-											<li>NSF Mathematical Sciences Postdoctoral Research Fellowship (2021-2023)</li>
-											<li>SIAM UKIE prize: Best student presentation, 27th Biennial Numerical Analysis Conference (2019)</li>
-											<li>NSF Graduate Research Fellowship (2016-2020)</li>
-											<li>M.S. thesis selected as the Boise State Univ. 2017 Distinguished Thesis in STEM </a></li>
-											<li>NASA ISGC fellowship (2015-2016)</li>
-										</ul>
-										<!--<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer non. Adipiscing cubilia elementum integer lorem ipsum dolor sit amet.</p>
-										<ul class="feature-icons">
-											<li class="fa-code">Papers</li>
-											<li class="fa-cubes">Software</li>-->
-											<!--<li class="fa-book">Talks</li>
-											<li class="fa-coffee">Drink much coffee</li>
-											<li class="fa-bolt">Lightning bolt</li>
-											<li class="fa-users">Shadow clone technique</li>-->
-										<!--</ul>-->
-									</div>
-								</section>
+  <!-- ═══ CURRENT PROJECTS ═══ -->
+  <section id="projects">
+    <h2>Current projects</h2>
 
-								<section id="five">
-									<div class="container">
-										<h3>Teaching</h3>
-										<ul>
-											<li>Autumn 2025 (Univ. Washington): (Instructor) AMATH 584, Numerical Linear Algebra, (Instructor) AMATH 590, Beyond the SVD: Low rank methods in numerical linear for big problems </li>
-											<li>Autumn 2024 (Univ. Washington): (Instructor) AMATH 301, Introduction to Scientific Computing</li>
-											<li>Spring 2024 (Univ. Washington): (Instructor) AMATH 352, Applied Linear Algebra and Introductory Numerical Analysis</li>
-											<li>Autumn 2023 (Univ. Washington): (Instructor) AMATH 584, Applied Linear Algebra and Introductory Numerical Analysis</li>
-											<li>Spring 2023 (UT Austin): (Instructor) M408D, Sequences, Series and Multivariable Calculus. Click <a href="M408D_syllabus.pdf">here</a> for a copy of the course syllabus </li>
-											<li>Fall 2022 (UT Austin): (Instructor) M427L, Advanced calculus for applications, II. Click <a href="M427L_syllabus.pdf">here</a> for a copy of the course syllabus </li>
-											<li>Spring 2021 (Cornell): (TA with instructor Prof. Steven Strogatz) <a href="https://courses.cornell.edu/preview_course_nopop.php?catoid=31&coid=492823">M1300: Mathematical explorations</a></li>
-											<li>Fall 2020 (Cornell): (TA with instructor Prof. Alex Townsend) <a href="https://classes.cornell.edu/browse/roster/SP21/class/MATH/2940">M2940: Linear algebra for engineers</a></li>
-										</ul>
-										<!--<p>Integer eu ante ornare amet commetus vestibulum blandit integer in curae ac faucibus integer non. Adipiscing cubilia elementum integer lorem ipsum dolor sit amet.</p>
-										<ul class="feature-icons">
-											<li class="fa-code">Papers</li>
-											<li class="fa-cubes">Software</li>-->
-											<!--<li class="fa-book">Talks</li>
-											<li class="fa-coffee">Drink much coffee</li>
-											<li class="fa-bolt">Lightning bolt</li>
-											<li class="fa-users">Shadow clone technique</li>-->
-										<!--</ul>-->
-									</div>
-								</section>
+    <div class="project-item">
+      <!-- TO ADD IMAGE: replace the div below with:
+           <img src="YOUR-IMAGE.jpg" alt="DESCRIBE IMAGE HERE" class="project-photo"> -->
+      <img src="keyhole.png" alt="a colorful image of the magnitude of an acoustic scattering wave trapped in a cavity with white boundaries." class="project-photo">
+      <div>
+        <p class="project-title">Parametrized PDEs</p>
+        <p class="project-desc">Many applications require solutions to families of PDEs dependent on continuous parameters. Such families often have interesting shared structures: if these can be thoroughly explained, fast numerical methods that take advantage of them can be developed. Another exciting angle of this work is the development of new numerical methods based on parametrization. As a simple example, multi-dimensional domains can be re-imagined as volume integrals over lower-dimensional slices dependent on parameters that vary continously under the integral. Exploiting shared structures in the slices gives us new discretization schemes for solving challenging PDEs. This work fuses together fast direct solvers, hierarchical low rank structures, and boundary integral equation methods. The picture on the right is a computation of the magnitude of an acoustic wave trapped in a keyhole region.</p>
+        <ul class="project-links">
+          <li><a href="https://arxiv.org/pdf/2506.15165">Paper on acoustic trapping</a></li>
+          <li><a href="https://www.youtube.com/watch?v=D6Uqt_vXf6c">Acoustic wave simulations</a></li>
+        </ul>
+      </div>
+    </div>
 
-						<!-- Four -->
-							<section id="six">
-								<div class="container">
-									<h3>Contact</h3>
-									<div class="container">
-									<p><b>Office:</b>LEW 328<br>
-									</div>
-									<div class="container">
-									<p><b>Email:</b> hdw27 (at) uw (dot) edu <br>
-									</div>
-									<div class="container">
-									<p><b>Address:</b> <br>
-										 Department of Applied Mathematics<br>
-										 Univerity of Washington<br>
-										 Lewis Hall #201, Box 353925 <br>
-										 Seattle, WA 98195-3925</p>
-									 </div>
-									<!--<form method="post" action="#">
-										<div class="row uniform">
-											<div class="6u 12u(xsmall)"><input type="text" name="name" id="name" placeholder="Name" /></div>
-											<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><input type="text" name="subject" id="subject" placeholder="Subject" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><textarea name="message" id="message" placeholder="Message" rows="6"></textarea></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u">
-												<ul class="actions">
-													<li><input type="submit" class="special" value="Send Message" /></li>
-													<li><input type="reset" value="Reset Form" /></li>
-												</ul>
-											</div>
-										</div>
-									</form>-->
-								</div>
-							</section>
+    <div class="project-item">
+      <!-- TO ADD IMAGE: replace the div below with:
+           <img src="YOUR-IMAGE.jpg" alt="DESCRIBE IMAGE HERE" class="project-photo"> -->
+      <img src="hier.png" alt="a rectangle sliced into smaller rectangles. The small rectangles on the diagonal are greyed out." class="project-photo">
+      <div>
+        <p class="project-title">Fast methods for structured matrices and operators</p>
+        <p class="project-desc">Hierarchical low rank structures arise in matrices related to interactions between particles and species. They also show up in data science in various settings (e.g., covariance matrices). While decades of work has been devoted to exploiting these structures in the context of PDEs and square systems, far less work has focused on how they can be used in rectangular systems and in the design of fast methods for solving standard optimization problems. From least-squares to LASSO, we are investigating the ways that hierarchical numerical methods can be adapted to optimization algorithms. Closely related to this work is our continued investigation into highly structured matrices in computational mathematics, including Cauchy, Toeplitz, Hankel, and Vandermonde matrices, as well as block-variants of these. The picture on the right shows an example of the structure found in a rectangular hierarchical matrix. </p>
+        <ul class="project-links">
+          <li><a href="https://arxiv.org/abs/2404.13223">Paper on hierarchical least squares for inverting nonuniform discrete Fourier transform matrices</a></li>
+          <li><a href="Cauchy_matrices.pdf">Slides from talk on why Cauchy matrices explain a lot in computational math</a> <span class="sr-only">(PDF)</span></li>
+        </ul>
+      </div>
+    </div>
 
-						<!-- Five -->
-						<!--
-							<section id="five">
-								<div class="container">
-									<h3>Elements</h3>
+    <div class="project-item">
+      <!-- TO ADD IMAGE: replace the div below with:
+           <img src="YOUR-IMAGE.jpg" alt="DESCRIBE IMAGE HERE" class="project-photo"> -->
+      <img src="rational_sign.png" alt="A colorful filled contour plot, with white lines on the imaginary axis and real axis, and white dots between them." class="project-photo">
+      <div>
+        <p class="project-title">Rational approximation</p>
+        <p class="project-desc">Rational approximation methods are a cornerstone of applied and computational mathematics. Any iterative method involving the evaluation of matrix inverses probably has a rational function at its core: studying how and why rational functions work well as approximants of more complicated functions helps us explain these methods and design new methods. Rational functions are also useful in signal processing and data science, serving as an approximation class that is especially good for tasks requiring the capture or identification of sharp features and transitions, extrapolation, or slow frequency decay. Fully explaining these properties in a rigorous sense, as well as designing new methods for making use of them in signal processing, is the major goal of our current work. The image on the left is a rational approximation to the sign function defined over the white lines, shown in the complex plane. The poles of the function (white dots) are useful in understanding key properties of function approximation in the domain.</p>
+        <ul class="project-links">
+          <li><a href="https://arxiv.org/abs/2408.14092">Paper on computing Zolotarev rational functions</a></li>
+          <li><a href="https://github.com/heatherw3521/REfit">REfit software for computing in MATLAB with exponential sums and rational functions</a></li>
+        </ul>
+      </div>
+    </div>
 
-									<section>
-										<h4>Text</h4>
-										<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-										This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-										This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
-										<hr />
-										<header>
-											<h4>Heading with a Subtitle</h4>
-											<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
-										</header>
-										<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-										<header>
-											<h5>Heading with a Subtitle</h5>
-											<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
-										</header>
-										<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-										<hr />
-										<h2>Heading Level 2</h2>
-										<h3>Heading Level 3</h3>
-										<h4>Heading Level 4</h4>
-										<h5>Heading Level 5</h5>
-										<h6>Heading Level 6</h6>
-										<hr />
-										<h5>Blockquote</h5>
-										<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-										<h5>Preformatted</h5>
-										<pre><code>i = 0;
+  </section>
 
-	while (!deck.isInOrder()) {
-	    print 'Iteration ' + i;
-	    deck.shuffle();
-	    i++;
-	}
+  <!-- ═══ WORKING WITH ME ═══ -->
+  <section id="students">
+    <h2>Working with me</h2>
+    <div class="prose">
+      <p>My research group includes several UW PhD students. <b>Wietse Vaes</b> is working on PDE solvers for waves and scattering. <b>Arjun Sethi-Olowin</b> is working on hierarchical methods for optimization problems. <b>Emily Zhang</b> and <b>Levent Batakci</b> are working on rational approximation in computation, and <b>Laura Thomas</b> is working on computational methods and approximation theory for pseudospectra in matrix pencils. <b>Jenny Green</b> is working with me on hierarchical structures in transform matrices, and <b>Sejal Gupta</b> is working with me on low rank structures in dynamical systems. <b>Bryce Parry</b>, a UW M.S. student, is working with me on quadrature methods for singular integrals. <b>Raaga Vangala</b> is a U.W. undergraduate working with me on Zolotarev rational approximation problems.</p>
+      <p>If you are any PhD student at UW looking for a GSR, please don't hesitate to reach out — I love hearing about what students in applied computational fields are working on, and am happy to serve on committees outside applied math as well.</p>
+      <p>I do not currently have research positions available for PhD, M.S., or undergraduate students. Check in next quarter.</p>
+    </div>
 
-	print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
-									</section>
+    <figure class="mascots" aria-label="Unofficial mascots">
+      <div class="mascot-grid">
+        <!-- TO ADD IMAGES: replace each div below with:
+             <img src="YOUR-IMAGE.jpg" alt="DESCRIBE MASCOT HERE" class="mascot-photo"> -->
+        <img src="L_cat.png" alt="picture of a grey cat standing up" class="mascot-photo">
+        <img src="w_cat.png" alt="picture of two cats, a grey striped one with ears back and an orange fat one" class="mascot-photo">
+        <img src="#" alt="picture of an orange cat" class="mascot-photo">
+      </div>
+      <figcaption class="mascot-caption">unofficial mascots</figcaption>
+    </figure>
+  </section>
 
-									<section>
-										<h4>Lists</h4>
-										<div class="row">
-											<div class="6u 12u(xsmall)">
-												<h5>Unordered</h5>
-												<ul>
-													<li>Dolor pulvinar etiam magna etiam.</li>
-													<li>Sagittis adipiscing lorem eleifend.</li>
-													<li>Felis enim feugiat dolore viverra.</li>
-												</ul>
-												<h5>Alternate</h5>
-												<ul class="alt">
-													<li>Dolor pulvinar etiam magna etiam.</li>
-													<li>Sagittis adipiscing lorem eleifend.</li>
-													<li>Felis enim feugiat dolore viverra.</li>
-												</ul>
-											</div>
-											<div class="6u 12u(xsmall)">
-												<h5>Ordered</h5>
-												<ol>
-													<li>Dolor pulvinar etiam magna etiam.</li>
-													<li>Etiam vel felis at lorem sed viverra.</li>
-													<li>Felis enim feugiat dolore viverra.</li>
-													<li>Dolor pulvinar etiam magna etiam.</li>
-													<li>Etiam vel felis at lorem sed viverra.</li>
-													<li>Felis enim feugiat dolore viverra.</li>
-												</ol>
-												<h5>Icons</h5>
-												<ul class="icons">
-													<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-													<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-													<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-													<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
-													<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-													<li><a href="#" class="icon fa-tumblr"><span class="label">Tumblr</span></a></li>
-												</ul>
-											</div>
-										</div>
-										<h5>Actions</h5>
-										<ul class="actions">
-											<li><a href="#" class="button special">Default</a></li>
-											<li><a href="#" class="button">Default</a></li>
-											<li><a href="#" class="button alt">Default</a></li>
-										</ul>
-										<ul class="actions small">
-											<li><a href="#" class="button special small">Small</a></li>
-											<li><a href="#" class="button small">Small</a></li>
-											<li><a href="#" class="button alt small">Small</a></li>
-										</ul>
-										<div class="row">
-											<div class="3u 6u(medium) 12u$(xsmall)">
-												<ul class="actions vertical">
-													<li><a href="#" class="button special">Default</a></li>
-													<li><a href="#" class="button">Default</a></li>
-													<li><a href="#" class="button alt">Default</a></li>
-												</ul>
-											</div>
-											<div class="3u 6u$(medium) 12u$(xsmall)">
-												<ul class="actions vertical small">
-													<li><a href="#" class="button special small">Small</a></li>
-													<li><a href="#" class="button small">Small</a></li>
-													<li><a href="#" class="button alt small">Small</a></li>
-												</ul>
-											</div>
-											<div class="3u 6u(medium) 12u$(xsmall)">
-												<ul class="actions vertical">
-													<li><a href="#" class="button special fit">Default</a></li>
-													<li><a href="#" class="button fit">Default</a></li>
-													<li><a href="#" class="button alt fit">Default</a></li>
-												</ul>
-											</div>
-											<div class="3u 6u$(medium) 12u$(xsmall)">
-												<ul class="actions vertical small">
-													<li><a href="#" class="button special small fit">Small</a></li>
-													<li><a href="#" class="button small fit">Small</a></li>
-													<li><a href="#" class="button alt small fit">Small</a></li>
-												</ul>
-											</div>
-										</div>
-									</section>
+  <!-- ═══ RESEARCH ═══ -->
+  <section id="research">
+    <h2>Papers and Presentations</h2>
 
-									<section>
-										<h4>Table</h4>
-										<h5>Default</h5>
-										<div class="table-wrapper">
-											<table>
-												<thead>
-													<tr>
-														<th>Name</th>
-														<th>Description</th>
-														<th>Price</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>Item One</td>
-														<td>Ante turpis integer aliquet porttitor.</td>
-														<td>29.99</td>
-													</tr>
-													<tr>
-														<td>Item Two</td>
-														<td>Vis ac commodo adipiscing arcu aliquet.</td>
-														<td>19.99</td>
-													</tr>
-													<tr>
-														<td>Item Three</td>
-														<td> Morbi faucibus arcu accumsan lorem.</td>
-														<td>29.99</td>
-													</tr>
-													<tr>
-														<td>Item Four</td>
-														<td>Vitae integer tempus condimentum.</td>
-														<td>19.99</td>
-													</tr>
-													<tr>
-														<td>Item Five</td>
-														<td>Ante turpis integer aliquet porttitor.</td>
-														<td>29.99</td>
-													</tr>
-												</tbody>
-												<tfoot>
-													<tr>
-														<td colspan="2"></td>
-														<td>100.00</td>
-													</tr>
-												</tfoot>
-											</table>
-										</div>
+    <h3>papers</h3>
+    <ul class="paper-list">
+      <li>
+        <div>
+          <div>M.A. Gilles, H. Wilber — <em>Low-rank approximation by randomly pivoted LU</em><span class="paper-status">submitted · SIMAX</span></div>
+      <li>
+        <div>
+          <div>H. Wilber, W. Vaes, A. Gopal, P.G. Martinsson — <em>A time-frequency method for acoustic scattering with trapping</em><span class="paper-status">submitted · J. Comp. Phys.</span></div>
+      <li>
+        <div>
+          <div>C. Ballew, T. Trogdon, H. Wilber — <em>The Akhiezer iteration and an inverse-free solver for Sylvester matrix equations</em><span class="paper-status">submitted · IMA J. Num. Analysis</span></div>
+      <li>
+        <div>
+          <div>B. Beckermann, D. Kressner, H. Wilber — <em>Compression properties for large Toeplitz-like matrices</em></div>
+          <div class="paper-venue">Num. Algorithms 100.4 (2025), 2041–2067</div>
+      <li>
+        <div>
+          <div>L.N. Trefethen, H. Wilber — <em>Computation of Zolotarev rational functions</em></div>
+          <div class="paper-venue">SISC 47.4 (2025), A2205–A2220</div>
+      <li>
+        <div>
+          <div>H. Wilber, E.N. Epperly, A.H. Barnett — <em>A superfast direct inversion method for the nonuniform discrete Fourier transform</em></div>
+          <div class="paper-venue">SISC 47.3 (2025), A1702–A1732</div>
+      <li>
+        <div>
+          <div>H. Wilber, A. Damle, A. Townsend — <em>Data-driven algorithms for signal processing with trigonometric rational functions</em></div>
+          <div class="paper-venue">SISC 44-3 (2022), C185–C209</div>
+      <li>
+        <div>
+          <div>D. Rubin, A. Townsend, H. Wilber — <em>Bounding Zolotarev numbers using Faber rational functions</em></div>
+          <div class="paper-venue">Const. Approx. 56 (2022), 1–26</div>
+      <li>
+        <div>
+          <div>Quinn, Wilber, Townsend, Sethna — <em>Chebyshev approximation and the global geometry of model predictions</em></div>
+          <div class="paper-venue">Phys. Rev. Lett. 122 (2019), 158302</div>
+      <li>
+        <div>
+          <div>A. Townsend, H. Wilber — <em>On the singular values of matrices with high displacement rank</em></div>
+          <div class="paper-venue">LAA 548 (2018), 19–41</div>
+      <li>
+        <div>
+          <div>H. Wilber, A. Townsend, G.B. Wright — <em>Computing with functions in spherical and polar geometries II: the disk</em></div>
+          <div class="paper-venue">SISC 39 (2017), C238–C262</div>
+      <li>
+        <div>
+          <div>A. Townsend, H. Wilber, G.B. Wright — <em>Computing with functions in spherical and polar geometries I: the sphere</em></div>
+          <div class="paper-venue">SISC 38 (2016), C403–C425</div>
+    </ul>
 
-										<h5>Alternate</h5>
-										<div class="table-wrapper">
-											<table class="alt">
-												<thead>
-													<tr>
-														<th>Name</th>
-														<th>Description</th>
-														<th>Price</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>Item One</td>
-														<td>Ante turpis integer aliquet porttitor.</td>
-														<td>29.99</td>
-													</tr>
-													<tr>
-														<td>Item Two</td>
-														<td>Vis ac commodo adipiscing arcu aliquet.</td>
-														<td>19.99</td>
-													</tr>
-													<tr>
-														<td>Item Three</td>
-														<td> Morbi faucibus arcu accumsan lorem.</td>
-														<td>29.99</td>
-													</tr>
-													<tr>
-														<td>Item Four</td>
-														<td>Vitae integer tempus condimentum.</td>
-														<td>19.99</td>
-													</tr>
-													<tr>
-														<td>Item Five</td>
-														<td>Ante turpis integer aliquet porttitor.</td>
-														<td>29.99</td>
-													</tr>
-												</tbody>
-												<tfoot>
-													<tr>
-														<td colspan="2"></td>
-														<td>100.00</td>
-													</tr>
-												</tfoot>
-											</table>
-										</div>
-									</section>
+    <h3>theses</h3>
+    <ul class="paper-list">
+      <li>
+        <div>M.S. Thesis</div>
+        <a href="https://heatherw3521.github.io/msc_thesis.pdf" class="paper-link">PDF<span class="sr-only"> of M.S. Thesis</span></a>
+      </li>
+      <li>
+        <div>PhD Thesis</div>
+        <a href="https://heatherw3521.github.io/phd_thesis.pdf" class="paper-link">PDF<span class="sr-only"> of PhD Thesis</span></a>
+      </li>
+    </ul>
 
-									<section>
-										<h4>Buttons</h4>
-										<ul class="actions">
-											<li><a href="#" class="button special">Special</a></li>
-											<li><a href="#" class="button">Default</a></li>
-											<li><a href="#" class="button alt">Alternate</a></li>
-										</ul>
-										<ul class="actions">
-											<li><a href="#" class="button special big">Big</a></li>
-											<li><a href="#" class="button">Default</a></li>
-											<li><a href="#" class="button alt small">Small</a></li>
-										</ul>
-										<ul class="actions fit">
-											<li><a href="#" class="button special fit">Fit</a></li>
-											<li><a href="#" class="button fit">Fit</a></li>
-											<li><a href="#" class="button alt fit">Fit</a></li>
-										</ul>
-										<ul class="actions fit small">
-											<li><a href="#" class="button special fit small">Fit + Small</a></li>
-											<li><a href="#" class="button fit small">Fit + Small</a></li>
-											<li><a href="#" class="button alt fit small">Fit + Small</a></li>
-										</ul>
-										<ul class="actions">
-											<li><a href="#" class="button special icon fa-download">Icon</a></li>
-											<li><a href="#" class="button icon fa-download">Icon</a></li>
-											<li><a href="#" class="button alt icon fa-check">Icon</a></li>
-										</ul>
-										<ul class="actions">
-											<li><span class="button special disabled">Special</span></li>
-											<li><span class="button disabled">Default</span></li>
-											<li><span class="button alt disabled">Alternate</span></li>
-										</ul>
-									</section>
+    <h3>upcoming conferences &amp; visits</h3>
+    <ul class="event-list">
+      <li>
+        <span class="event-date">May 2026</span>
+        <span><a href="https://ilas2026.math.vt.edu/">27th Conference of the ILAS</a> <span class="event-venue">— Blacksburg, VA</span></span>
+      </li>
+      <li>
+        <span class="event-date">Mar 2026</span>
+        <span><a href="https://berkeleyams.lbl.gov/spring26/">Berkeley Applied Mathematics Seminar</a> <span class="event-venue">— Berkeley, CA</span></span>
+      </li>
+      <li>
+        <span class="event-date">Mar 2026</span>
+        <span><a href="https://www.birs.ca/events/2026/5-day-workshops/26w5567">BIRS Workshop: Women in computational methods for PDEs</a> <span class="event-venue">— Banff, Canada</span></span>
+      </li>
+      <li>
+        <span class="event-date">Sept 2025</span>
+        <span><a href="https://www.mittag-leffler.se/activities/interfaces-and-unfitted-discretization-methods/">Mittag-Leffler Program: Interfaces and Unfitted Discretizations</a> <span class="event-venue">— Djursholm, Sweden</span></span>
+      </li>
+    </ul>
 
-									<section>
-										<h4>Form</h4>
-										<form method="post" action="#">
-											<div class="row uniform">
-												<div class="6u 12u(xsmall)">
-													<input type="text" name="demo-name" id="demo-name" value="" placeholder="Name" />
-												</div>
-												<div class="6u 12u(xsmall)">
-													<input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
-												</div>
-											</div>
-											<div class="row uniform">
-												<div class="12u">
-													<div class="select-wrapper">
-														<select name="demo-category" id="demo-category">
-															<option value="">- Category -</option>
-															<option value="1">Manufacturing</option>
-															<option value="1">Shipping</option>
-															<option value="1">Administration</option>
-															<option value="1">Human Resources</option>
-														</select>
-													</div>
-												</div>
-											</div>
-											<div class="row uniform">
-												<div class="4u 12u(medium)">
-													<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-													<label for="demo-priority-low">Low Priority</label>
-												</div>
-												<div class="4u 12u(medium)">
-													<input type="radio" id="demo-priority-normal" name="demo-priority">
-													<label for="demo-priority-normal">Normal Priority</label>
-												</div>
-												<div class="4u 12u(medium)">
-													<input type="radio" id="demo-priority-high" name="demo-priority">
-													<label for="demo-priority-high">High Priority</label>
-												</div>
-											</div>
-											<div class="row uniform">
-												<div class="6u 12u(medium)">
-													<input type="checkbox" id="demo-copy" name="demo-copy">
-													<label for="demo-copy">Email me a copy of this message</label>
-												</div>
-												<div class="6u 12u(medium)">
-													<input type="checkbox" id="demo-human" name="demo-human" checked>
-													<label for="demo-human">I am a human and not a robot</label>
-												</div>
-											</div>
-											<div class="row uniform">
-												<div class="12u">
-													<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-												</div>
-											</div>
-											<div class="row uniform">
-												<div class="12u">
-													<ul class="actions">
-														<li><input type="submit" value="Send Message" /></li>
-														<li><input type="reset" value="Reset" class="alt" /></li>
-													</ul>
-												</div>
-											</div>
-										</form>
-									</section>
+    <h3>selected presentations</h3>
+    <ul class="pres-list">
+      <li>
+        <span>Acoustic waves in unfriendly domains</span>
+        <a href="https://heatherw3521.github.io/Householder2025.pdf" class="paper-link">slides <span class="sr-only">(PDF)</span></a>
+      </li>
+      <li>
+        <span>Zolotarev numbers and the nonuniform discrete Fourier transform</span>
+        <a href="https://heatherw3521.github.io/Princeton2024.pdf" class="paper-link">slides <span class="sr-only">(PDF)</span></a>
+      </li>
+      <li>
+        <span>REfit: data-driven computing with trigonometric rationals</span>
+        <a href="https://heatherw3521.github.io/REFIT_POSTER_all.pdf" class="paper-link">poster <span class="sr-only">(PDF)</span></a>
+      </li>
+      <li>
+        <span>Low rank numerical methods via rational approximation</span>
+        <a href="https://heatherw3521.github.io/CAvid.pdf" class="paper-link">slides <span class="sr-only">(PDF)</span></a>
+      </li>
+      <li>
+        <span>Computing with functions on the sphere and disk</span>
+        <a href="https://heatherw3521.github.io/poster.pdf" class="paper-link">poster <span class="sr-only">(PDF)</span></a>
+      </li>
+    </ul>
+    <p class="small-note">Complete list in <a href="https://heatherw3521.github.io/H_Wilber_CV_short.pdf">CV <span class="sr-only">(PDF)</span></a>.</p>
 
-									<section>
-										<h4>Image</h4>
-										<h5>Fit</h5>
-										<span class="image fit"><img src="images/banner.jpg" alt="" /></span>
-										<div class="box alt">
-											<div class="row 50% uniform">
-												<div class="4u"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
-												<div class="4u"><span class="image fit"><img src="images/pic02.jpg" alt="" /></span></div>
-												<div class="4u"><span class="image fit"><img src="images/pic03.jpg" alt="" /></span></div>
-											</div>
-											<div class="row 50% uniform">
-												<div class="4u"><span class="image fit"><img src="images/pic02.jpg" alt="" /></span></div>
-												<div class="4u"><span class="image fit"><img src="images/pic03.jpg" alt="" /></span></div>
-												<div class="4u"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
-											</div>
-											<div class="row 50% uniform">
-												<div class="4u"><span class="image fit"><img src="images/pic03.jpg" alt="" /></span></div>
-												<div class="4u"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
-												<div class="4u"><span class="image fit"><img src="images/pic02.jpg" alt="" /></span></div>
-											</div>
-										</div>
-										<h5>Left &amp; Right</h5>
-										<p><span class="image left"><img src="images/avatar.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>
-										<p><span class="image right"><img src="images/avatar.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>
-									</section>
+    <h3>software</h3>
+    <div class="software-grid">
+      <div class="software-card">
+        <a href="https://github.com/heatherw3521/time-frequency-acousticwaves">Acoustic waves</a>
+        <p>Solving acoustic scattering problems with time-frequency methods (MATLAB)</p>
+      </div>
+      <div class="software-card">
+        <a href="https://github.com/heatherw3521/NUDFT">NUDFT</a>
+        <p>Inverse non-uniform discrete Fourier transform (MATLAB)</p>
+      </div>
+      <div class="software-card">
+        <a href="https://github.com/heatherw3521/structmats">Structmats</a>
+        <p>Computing with structured matrices in MATLAB (currently a sandbox)</p>
+      </div>
+      <div class="software-card">
+        <a href="https://github.com/heatherw3521/REfit">REfit</a>
+        <p>Rational functions and exponential sums (MATLAB)</p>
+      </div>
+      <div class="software-card">
+        <a href="https://github.com/ajt60gaibb/freeLYAP">FI-ADI</a>
+        <p>Low-rank solver for Sylvester equations (MATLAB)</p>
+      </div>
+      <div class="software-card">
+        <a href="http://www.chebfun.org/docs/guide/guide16.html">Diskfun</a>
+        <p>Functions on the unit disk (MATLAB)</p>
+      </div>
+      <div class="software-card">
+        <a href="http://www.chebfun.org/docs/guide/guide17.html">Spherefun</a>
+        <p>Functions on the unit sphere (MATLAB)</p>
+      </div>
+    </div>
+  </section>
 
-								</div>
-							</section>
-						-->
+  <!-- ═══ AWARDS ═══ -->
+  <section id="awards">
+    <h2>Awards &amp; Fellowships</h2>
+    <ul class="award-list">
+      <li><span>Householder Prize</span><span class="award-year">2022</span></li>
+      <li><span>AWM Dissertation Prize</span><span class="award-year">2022</span></li>
+      <li><span>NSF Mathematical Sciences Postdoctoral Research Fellowship</span><span class="award-year">2021–2023</span></li>
+      <li><span>SIAM UKIE Prize: best student presentation, 27th Biennial Numerical Analysis Conference</span><span class="award-year">2019</span></li>
+      <li><span>NSF Graduate Research Fellowship</span><span class="award-year">2016–2020</span></li>
+      <li><span>Boise State University Distinguished M.S. Thesis in STEM</span><span class="award-year">2017</span></li>
+      <li><span>NASA ISGC Fellowship</span><span class="award-year">2015–2016</span></li>
+    </ul>
+    <p class="small-note">Complete list in <a href="https://heatherw3521.github.io/H_Wilber_CV_short.pdf">CV <span class="sr-only">(PDF)</span></a>.</p>
+  </section>
 
-					</div>
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-label">email</p>
+        <p class="contact-val"><a href="mailto:hdw27@uw.edu">hdw27 (at) uw (dot) edu</a></p>
+      </div>
+      <div>
+        <p class="contact-label">office</p>
+        <p class="contact-val">LEW 328</p>
+      </div>
+      <div>
+        <p class="contact-label">address</p>
+        <p class="contact-val">
+          Department of Applied Mathematics<br>
+          University of Washington<br>
+          Lewis Hall #201, Box 353925<br>
+          Seattle, WA 98195-3925
+        </p>
+      </div>
+    </div>
+  </section>
 
-				<!-- Footer -->
-					<section id="footer">
-						<div class="container">
-							<ul class="copyright">
-								<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div>
-					</section>
+</div>
 
-			</div>
+<footer>Heather Wilber · University of Washington</footer>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-
-	</body>
+<script>
+const toggle = document.getElementById('themeToggle');
+const icon = document.getElementById('themeIcon');
+const label = document.getElementById('themeLabel');
+const html = document.documentElement;
+const saved = (() => { try { return localStorage.getItem('theme'); } catch(e) { return null; } })()
+  || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+setTheme(saved);
+function setTheme(t) {
+  html.setAttribute('data-theme', t);
+  icon.textContent = t === 'dark' ? '●' : '○';
+  label.textContent = t === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('theme', t); } catch(e) {}
+}
+toggle.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+</script>
+</body>
 </html>
