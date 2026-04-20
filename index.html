@@ -54,7 +54,7 @@
 
   /* Mascots */
   .mascots { margin-top: 2.5rem; }
-  .mascot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0.75rem;justify-content: center; }
+  .mascot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0.75rem; justify-content: center; }
   .mascot-photo { width: 80%; aspect-ratio: 1.5 / 1; border-radius: 3px; object-fit: cover; display: block; }
   .mascot-placeholder { width: 80%; aspect-ratio: 1.5 / 1; border-radius: 3px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
   .mascot-caption { text-align: center; font-size: 16px; color: var(--muted); letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; }
@@ -113,9 +113,9 @@
 </head>
 <body>
 
-<nav>
+<nav aria-label="Site navigation">
   <a href="#" class="nav-name">Heather Wilber</a>
-  <main class="nav-right">
+  <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#about">about</a></li>
       <li><a href="#projects">projects</a></li>
@@ -128,163 +128,189 @@
       <span id="themeIcon">○</span>
       <span id="themeLabel">dark</span>
     </button>
-  </main>
+  </div>
 </nav>
 
 <main class="container">
 
   <!-- ═══ HERO ═══ -->
-  <main class="hero" id="about">
-    <main>
+  <div class="hero" id="about">
+    <div>
       <h1>Heather Wilber</h1>
       <p class="hero-affil">Assistant Professor · Applied Mathematics · University of Washington</p>
       <p class="hero-bio">My research sits at the intersection of approximation theory, numerical linear algebra, and scientific computing. I develop and analyze fast direct methods for solving PDEs via hierarchical numerical linear algebra, low-rank and rank-structured approximation methods, boundary integral equation methods, and robust numerical methods for nonlinear approximations to functions.</p>
-      <main class="hero-links">
+      <div class="hero-links">
         <a href="https://heatherw3521.github.io/H_Wilber_CV_short.pdf">CV <span class="sr-only">(PDF)</span></a>
         <a href="mailto:hdw27@uw.edu">email</a>
-      </main>
-    </main>
-    <!-- TO ADD PHOTO: replace the main below with:
-          -->
+      </div>
+    </div>
     <img src="me.jpg" alt="Picture of a woman smiling" class="hero-photo">
-  </main>
+  </div>
 
   <!-- ═══ CURRENT PROJECTS ═══ -->
-  <section id="projects">
-    <h2>Current projects</h2>
+  <section id="projects" aria-labelledby="projects-heading">
+    <h2 id="projects-heading">Current projects</h2>
 
-    <main class="project-item">
-      <!-- TO ADD IMAGE: replace the main below with:
-           <img src="YOUR-IMAGE.jpg" alt="DESCRIBE IMAGE HERE" class="project-photo"> -->
-      <img src="keyhole.png" alt="a colorful image of the magnitude of an acoustic scattering wave trapped in a cavity with white boundaries." class="project-photo">
-      <main>
+    <div class="project-item">
+      <img src="keyhole.png" alt="A colorful image of the magnitude of an acoustic scattering wave trapped in a cavity with white boundaries." class="project-photo">
+      <div>
         <p class="project-title">Parametrized PDEs</p>
-        <p class="project-desc">Many applications require solutions to families of PDEs dependent on continuous parameters. Such families often have interesting shared structures: if these can be thoroughly explained, fast numerical methods that take advantage of them can be developed. Another exciting angle of this work is the development of new numerical methods based on parametrization. As a simple example, multi-dimensional domains can be re-imagined as volume integrals over lower-dimensional slices dependent on parameters that vary continously under the integral. Exploiting shared structures in the slices gives us new discretization schemes for solving challenging PDEs. This work fuses together fast direct solvers, hierarchical low rank structures, and boundary integral equation methods. The picture on the right is a computation of the magnitude of an acoustic wave trapped in a keyhole region.</p>
-        <ul class="project-links">
+        <p class="project-desc">Many applications require solutions to families of PDEs dependent on continuous parameters. Such families often have interesting shared structures: if these can be thoroughly explained, fast numerical methods that take advantage of them can be developed. Another exciting angle of this work is the development of new numerical methods based on parametrization. As a simple example, multi-dimensional domains can be re-imagined as volume integrals over lower-dimensional slices dependent on parameters that vary continuously under the integral. Exploiting shared structures in the slices gives us new discretization schemes for solving challenging PDEs. This work fuses together fast direct solvers, hierarchical low rank structures, and boundary integral equation methods. The picture on the right is a computation of the magnitude of an acoustic wave trapped in a keyhole region.</p>
+        <ul class="project-links" aria-label="Related resources for Parametrized PDEs">
           <li><a href="https://arxiv.org/pdf/2506.15165">Paper on acoustic trapping</a></li>
           <li><a href="https://www.youtube.com/watch?v=D6Uqt_vXf6c">Acoustic wave simulations</a></li>
         </ul>
-      </main>
-    </main>
+      </div>
+    </div>
 
-    <main class="project-item">
-      <!-- TO ADD IMAGE: replace the main below with:
-           <img src="YOUR-IMAGE.jpg" alt="DESCRIBE IMAGE HERE" class="project-photo"> -->
-      <img src="hier.png" alt="a rectangle sliced into smaller rectangles. The small rectangles on the diagonal are greyed out." class="project-photo">
-      <main>
+    <div class="project-item">
+      <img src="hier.png" alt="A rectangle sliced into smaller rectangles. The small rectangles on the diagonal are greyed out." class="project-photo">
+      <div>
         <p class="project-title">Fast methods for structured matrices and operators</p>
-        <p class="project-desc">Hierarchical low rank structures arise in matrices related to interactions between particles, planets, chemical species, and various other creatures. They also show up in data science in numerous ways (e.g., covariance matrices). While decades of work have been devoted to exploiting these structures in the context of PDEs and square systems, far less work has focused on how they can be used in rectangular systems and in the design of fast methods for solving standard optimization problems. From least-squares to LASSO, we are investigating the ways that hierarchical numerical methods can be adapted to optimization algorithms. Closely related to this work is our continued investigation into highly structured matrices in computational mathematics, including Cauchy, Toeplitz, Hankel, and Vandermonde matrices, as well as block-variants of these. The picture on the right shows an example of the structure found in a rectangular hierarchical matrix. </p>
-        <ul class="project-links">
+        <p class="project-desc">Hierarchical low rank structures arise in matrices related to interactions between particles, planets, chemical species, and various other creatures. They also show up in data science in numerous ways (e.g., covariance matrices). While decades of work have been devoted to exploiting these structures in the context of PDEs and square systems, far less work has focused on how they can be used in rectangular systems and in the design of fast methods for solving standard optimization problems. From least-squares to LASSO, we are investigating the ways that hierarchical numerical methods can be adapted to optimization algorithms. Closely related to this work is our continued investigation into highly structured matrices in computational mathematics, including Cauchy, Toeplitz, Hankel, and Vandermonde matrices, as well as block-variants of these. The picture on the right shows an example of the structure found in a rectangular hierarchical matrix.</p>
+        <ul class="project-links" aria-label="Related resources for Fast methods for structured matrices and operators">
           <li><a href="https://arxiv.org/abs/2404.13223">Paper on hierarchical least squares for inverting nonuniform discrete Fourier transform matrices</a></li>
-          <li><a href="Cauchy_matrices.pdf">Slides from talk on why Cauchy matrices explain a lot in computational math</a> <span class="sr-only">(PDF)</span></li>
+          <li><a href="Cauchy_matrices.pdf">Slides from talk on why Cauchy matrices explain a lot in computational math <span class="sr-only">(PDF)</span></a></li>
         </ul>
-      </main>
-    </main>
+      </div>
+    </div>
 
-    <main class="project-item">
-      <!-- TO ADD IMAGE: replace the main below with:
-           <img src="YOUR-IMAGE.jpg" alt="DESCRIBE IMAGE HERE" class="project-photo"> -->
+    <div class="project-item">
       <img src="rational_sign.png" alt="A colorful filled contour plot, with white lines on the imaginary axis and real axis, and white dots between them." class="project-photo">
-      <main>
+      <div>
         <p class="project-title">Rational approximation</p>
         <p class="project-desc">Rational approximation methods are a cornerstone of applied and computational mathematics. Any iterative method involving the application of matrix inverses probably has a rational function at its core: studying how and why rational functions work well as approximants of more complicated functions helps us explain these methods and design new methods. Rational functions are also useful in signal processing and data science, serving as an approximation class that is especially good for tasks requiring the capture or identification of sharp features and transitions, extrapolation, or slow frequency decay. Fully explaining these properties in a rigorous sense, as well as designing new methods for making use of them in signal processing, is the major goal of our current work. The image on the left is a rational approximation to the sign function defined over the white lines, shown in the complex plane. The poles of the function (white dots) are useful in understanding key properties of function approximation in the domain.</p>
-        <ul class="project-links">
+        <ul class="project-links" aria-label="Related resources for Rational approximation">
           <li><a href="https://arxiv.org/abs/2408.14092">Paper on computing Zolotarev rational functions</a></li>
           <li><a href="https://github.com/heatherw3521/REfit">REfit software for computing in MATLAB with exponential sums and rational functions</a></li>
         </ul>
-      </main>
-    </main>
+      </div>
+    </div>
 
   </section>
 
   <!-- ═══ WORKING WITH ME ═══ -->
-  <section id="students">
-    <h2>Working with me</h2>
-    <main class="prose">
+  <section id="students" aria-labelledby="students-heading">
+    <h2 id="students-heading">Working with me</h2>
+    <div class="prose">
       <p>My research group includes several UW PhD students. <b>Wietse Vaes</b> is working on PDE solvers for waves and scattering. <b>Arjun Sethi-Olowin</b> is working on hierarchical methods for optimization problems. <b>Emily Zhang</b> and <b>Levent Batakci</b> are working on rational approximation in computation, and <b>Laura Thomas</b> is working on computational methods and approximation theory for pseudospectra in matrix pencils. <b>Jenny Green</b> is working with me on hierarchical structures in transform matrices, and <b>Sejal Gupta</b> is working with me on low rank structures in dynamical systems. <b>Bryce Parry</b>, a UW M.S. student, is working with me on quadrature methods for singular integrals. <b>Raaga Vangala</b> is a U.W. undergraduate working with me on Zolotarev rational approximation problems.</p>
       <p>If you are any PhD student at UW looking for a GSR, please don't hesitate to reach out — I love hearing about what students in applied computational fields are working on, and am happy to serve on committees outside applied math as well.</p>
       <p><b>I do not currently have research positions available for PhD, M.S., or undergraduate students.</b> Check in next quarter.</p>
-    </main>
+    </div>
 
     <figure class="mascots" aria-label="Unofficial mascots">
-      <main class="mascot-grid">
-        <!-- TO ADD IMAGES: replace each main below with:
-             <img src="YOUR-IMAGE.jpg" alt="DESCRIBE MASCOT HERE" class="mascot-photo"> -->
-        <img src="L_cat.png" alt="picture of a grey cat standing up" class="mascot-photo">
-        <img src="w_cat.png" alt="picture of two cats, a grey striped one with ears back and an orange fat one" class="mascot-photo">
-        <img src="LT_cat.png" alt="picture of an orange cat" class="mascot-photo">
-      </main>
+      <div class="mascot-grid">
+        <img src="L_cat.png" alt="A grey cat standing up." class="mascot-photo">
+        <img src="w_cat.png" alt="Two cats: a grey striped one with ears back and a larger orange one." class="mascot-photo">
+        <img src="LT_cat.png" alt="An orange cat." class="mascot-photo">
+      </div>
       <figcaption class="mascot-caption">Our unofficial mascots</figcaption>
     </figure>
   </section>
 
   <!-- ═══ RESEARCH ═══ -->
-  <section id="research">
-    <h2>Papers and Presentations</h2>
+  <section id="research" aria-labelledby="research-heading">
+    <h2 id="research-heading">Papers and Presentations</h2>
 
     <h3>papers</h3>
-    <ul class="paper-list">
+    <ul class="paper-list" aria-label="List of papers">
       <li>
-        <main>
-          <main>M.A. Gilles, H. Wilber — <em>Low-rank approximation by randomly pivoted LU</em><span class="paper-status">submitted · SIMAX</span></main>
+        <div>
+          <div>M.A. Gilles, H. Wilber — <em>Low-rank approximation by randomly pivoted LU</em><span class="paper-status">submitted · SIMAX</span></div>
+        </div>
+        <a href="https://arxiv.org/abs/2601.22344" class="paper-link">PDF<span class="sr-only"> of Low-rank approximation by randomly pivoted LU</span></a>
+      </li>
       <li>
-        <main>
-          <main>H. Wilber, W. Vaes, A. Gopal, P.G. Martinsson — <em>A time-frequency method for acoustic scattering with trapping</em><span class="paper-status">submitted · J. Comp. Phys.</span></main>
+        <div>
+          <div>H. Wilber, W. Vaes, A. Gopal, P.G. Martinsson — <em>A time-frequency method for acoustic scattering with trapping</em><span class="paper-status">submitted · J. Comp. Phys.</span></div>
+        </div>
+        <a href="https://arxiv.org/abs/2506.15165" class="paper-link">PDF<span class="sr-only"> of A time-frequency method for acoustic scattering with trapping</span></a>
+      </li>
       <li>
-        <main>
-          <main>C. Ballew, T. Trogdon, H. Wilber — <em>The Akhiezer iteration and an inverse-free solver for Sylvester matrix equations</em><span class="paper-status">submitted · IMA J. Num. Analysis</span></main>
+        <div>
+          <div>C. Ballew, T. Trogdon, H. Wilber — <em>The Akhiezer iteration and an inverse-free solver for Sylvester matrix equations</em><span class="paper-status">submitted · IMA J. Num. Analysis</span></div>
+        </div>
+        <a href="https://arxiv.org/abs/2503.17496" class="paper-link">PDF<span class="sr-only"> of The Akhiezer iteration and an inverse-free solver for Sylvester matrix equations</span></a>
+      </li>
       <li>
-        <main>
-          <main>B. Beckermann, D. Kressner, H. Wilber — <em>Compression properties for large Toeplitz-like matrices</em></main>
-          <main class="paper-venue">Num. Algorithms 100.4 (2025), 2041–2067</main>
+        <div>
+          <div>B. Beckermann, D. Kressner, H. Wilber — <em>Compression properties for large Toeplitz-like matrices</em></div>
+          <div class="paper-venue">Num. Algorithms 100.4 (2025), 2041–2067</div>
+        </div>
+        <a href="https://arxiv.org/abs/2502.09823" class="paper-link">PDF<span class="sr-only"> of Compression properties for large Toeplitz-like matrices</span></a>
+      </li>
       <li>
-        <main>
-          <main>L.N. Trefethen, H. Wilber — <em>Computation of Zolotarev rational functions</em></main>
-          <main class="paper-venue">SISC 47.4 (2025), A2205–A2220</main>
+        <div>
+          <div>L.N. Trefethen, H. Wilber — <em>Computation of Zolotarev rational functions</em></div>
+          <div class="paper-venue">SISC 47.4 (2025), A2205–A2220</div>
+        </div>
+        <a href="https://arxiv.org/abs/2408.14092" class="paper-link">PDF<span class="sr-only"> of Computation of Zolotarev rational functions</span></a>
+      </li>
       <li>
-        <main>
-          <main>H. Wilber, E.N. Epperly, A.H. Barnett — <em>A superfast direct inversion method for the nonuniform discrete Fourier transform</em></main>
-          <main class="paper-venue">SISC 47.3 (2025), A1702–A1732</main>
+        <div>
+          <div>H. Wilber, E.N. Epperly, A.H. Barnett — <em>A superfast direct inversion method for the nonuniform discrete Fourier transform</em></div>
+          <div class="paper-venue">SISC 47.3 (2025), A1702–A1732</div>
+        </div>
+        <a href="https://arxiv.org/abs/2404.13223" class="paper-link">PDF<span class="sr-only"> of A superfast direct inversion method for the nonuniform discrete Fourier transform</span></a>
+      </li>
       <li>
-        <main>
-          <main>H. Wilber, A. Damle, A. Townsend — <em>Data-driven algorithms for signal processing with trigonometric rational functions</em></main>
-          <main class="paper-venue">SISC 44-3 (2022), C185–C209</main>
+        <div>
+          <div>H. Wilber, A. Damle, A. Townsend — <em>Data-driven algorithms for signal processing with trigonometric rational functions</em></div>
+          <div class="paper-venue">SISC 44-3 (2022), C185–C209</div>
+        </div>
+        <a href="https://arxiv.org/pdf/2105.07324.pdf" class="paper-link">PDF<span class="sr-only"> of Data-driven algorithms for signal processing with trigonometric rational functions</span></a>
+      </li>
       <li>
-        <main>
-          <main>D. Rubin, A. Townsend, H. Wilber — <em>Bounding Zolotarev numbers using Faber rational functions</em></main>
-          <main class="paper-venue">Const. Approx. 56 (2022), 1–26</main>
+        <div>
+          <div>D. Rubin, A. Townsend, H. Wilber — <em>Bounding Zolotarev numbers using Faber rational functions</em></div>
+          <div class="paper-venue">Const. Approx. 56 (2022), 1–26</div>
+        </div>
+        <a href="https://arxiv.org/abs/1911.11882" class="paper-link">PDF<span class="sr-only"> of Bounding Zolotarev numbers using Faber rational functions</span></a>
+      </li>
       <li>
-        <main>
-          <main>Quinn, Wilber, Townsend, Sethna — <em>Chebyshev approximation and the global geometry of model predictions</em></main>
-          <main class="paper-venue">Phys. Rev. Lett. 122 (2019), 158302</main>
+        <div>
+          <div>Quinn, Wilber, Townsend, Sethna — <em>Chebyshev approximation and the global geometry of model predictions</em></div>
+          <div class="paper-venue">Phys. Rev. Lett. 122 (2019), 158302</div>
+        </div>
+        <a href="https://www.researchgate.net/publication/332520214" class="paper-link">PDF<span class="sr-only"> of Chebyshev approximation and the global geometry of model predictions</span></a>
+      </li>
       <li>
-        <main>
-          <main>A. Townsend, H. Wilber — <em>On the singular values of matrices with high displacement rank</em></main>
-          <main class="paper-venue">LAA 548 (2018), 19–41</main>
+        <div>
+          <div>A. Townsend, H. Wilber — <em>On the singular values of matrices with high displacement rank</em></div>
+          <div class="paper-venue">LAA 548 (2018), 19–41</div>
+        </div>
+        <a href="https://arxiv.org/abs/1712.05864" class="paper-link">PDF<span class="sr-only"> of On the singular values of matrices with high displacement rank</span></a>
+      </li>
       <li>
-        <main>
-          <main>H. Wilber, A. Townsend, G.B. Wright — <em>Computing with functions in spherical and polar geometries II: the disk</em></main>
-          <main class="paper-venue">SISC 39 (2017), C238–C262</main>
+        <div>
+          <div>H. Wilber, A. Townsend, G.B. Wright — <em>Computing with functions in spherical and polar geometries II: the disk</em></div>
+          <div class="paper-venue">SISC 39 (2017), C238–C262</div>
+        </div>
+        <a href="https://arxiv.org/abs/1604.03061" class="paper-link">PDF<span class="sr-only"> of Computing with functions in spherical and polar geometries II: the disk</span></a>
+      </li>
       <li>
-        <main>
-          <main>A. Townsend, H. Wilber, G.B. Wright — <em>Computing with functions in spherical and polar geometries I: the sphere</em></main>
-          <main class="paper-venue">SISC 38 (2016), C403–C425</main>
+        <div>
+          <div>A. Townsend, H. Wilber, G.B. Wright — <em>Computing with functions in spherical and polar geometries I: the sphere</em></div>
+          <div class="paper-venue">SISC 38 (2016), C403–C425</div>
+        </div>
+        <a href="https://arxiv.org/abs/1510.08094" class="paper-link">PDF<span class="sr-only"> of Computing with functions in spherical and polar geometries I: the sphere</span></a>
+      </li>
     </ul>
 
     <h3>theses</h3>
-    <ul class="paper-list">
+    <ul class="paper-list" aria-label="List of theses">
       <li>
-        <main>M.S. Thesis</main>
+        <div>M.S. Thesis</div>
         <a href="https://heatherw3521.github.io/msc_thesis.pdf" class="paper-link">PDF<span class="sr-only"> of M.S. Thesis</span></a>
       </li>
       <li>
-        <main>PhD Thesis</main>
+        <div>PhD Thesis</div>
         <a href="https://heatherw3521.github.io/phd_thesis.pdf" class="paper-link">PDF<span class="sr-only"> of PhD Thesis</span></a>
       </li>
     </ul>
 
     <h3>upcoming conferences &amp; visits</h3>
-    <ul class="event-list">
+    <ul class="event-list" aria-label="Upcoming conferences and visits">
       <li>
         <span class="event-date">May 2026</span>
         <span><a href="https://ilas2026.math.vt.edu/">27th Conference of the ILAS</a> <span class="event-venue">— Blacksburg, VA</span></span>
@@ -304,7 +330,7 @@
     </ul>
 
     <h3>selected presentations</h3>
-    <ul class="pres-list">
+    <ul class="pres-list" aria-label="Selected presentations">
       <li>
         <span>Acoustic waves in unfriendly domains</span>
         <a href="https://heatherw3521.github.io/Householder2025.pdf" class="paper-link">slides <span class="sr-only">(PDF)</span></a>
@@ -326,45 +352,44 @@
         <a href="https://heatherw3521.github.io/poster.pdf" class="paper-link">poster <span class="sr-only">(PDF)</span></a>
       </li>
     </ul>
-    <!--<p class="small-note">Complete list in <a href="https://heatherw3521.github.io/H_Wilber_CV_short.pdf">CV <span class="sr-only">(PDF)</span></a>.</p>-->
 
     <h3>software</h3>
-    <main class="software-grid">
-      <main class="software-card">
+    <div class="software-grid">
+      <div class="software-card">
         <a href="https://github.com/heatherw3521/time-frequency-acousticwaves">Acoustic waves</a>
         <p>Solving acoustic scattering problems with time-frequency methods (MATLAB)</p>
-      </main>
-      <main class="software-card">
+      </div>
+      <div class="software-card">
         <a href="https://github.com/heatherw3521/NUDFT">NUDFT</a>
         <p>Inverse non-uniform discrete Fourier transform (MATLAB)</p>
-      </main>
-      <main class="software-card">
+      </div>
+      <div class="software-card">
         <a href="https://github.com/heatherw3521/structmats">Structmats</a>
         <p>Computing with structured matrices in MATLAB (currently a sandbox)</p>
-      </main>
-      <main class="software-card">
+      </div>
+      <div class="software-card">
         <a href="https://github.com/heatherw3521/REfit">REfit</a>
         <p>Rational functions and exponential sums (MATLAB)</p>
-      </main>
-      <main class="software-card">
+      </div>
+      <div class="software-card">
         <a href="https://github.com/ajt60gaibb/freeLYAP">FI-ADI</a>
         <p>Low-rank solver for Sylvester equations (MATLAB)</p>
-      </main>
-      <main class="software-card">
+      </div>
+      <div class="software-card">
         <a href="http://www.chebfun.org/docs/guide/guide16.html">Diskfun</a>
         <p>Functions on the unit disk (MATLAB)</p>
-      </main>
-      <main class="software-card">
+      </div>
+      <div class="software-card">
         <a href="http://www.chebfun.org/docs/guide/guide17.html">Spherefun</a>
         <p>Functions on the unit sphere (MATLAB)</p>
-      </main>
-    </main>
+      </div>
+    </div>
   </section>
 
   <!-- ═══ AWARDS ═══ -->
-  <section id="awards">
-    <h2>Select Awards &amp; Fellowships</h2>
-    <ul class="award-list">
+  <section id="awards" aria-labelledby="awards-heading">
+    <h2 id="awards-heading">Select Awards &amp; Fellowships</h2>
+    <ul class="award-list" aria-label="Awards and fellowships">
       <li><span>Householder Prize</span><span class="award-year">2022</span></li>
       <li><span>AWM Dissertation Prize</span><span class="award-year">2022</span></li>
       <li><span>NSF Mathematical Sciences Postdoctoral Research Fellowship</span><span class="award-year">2021–2023</span></li>
@@ -373,22 +398,21 @@
       <li><span>Boise State University Distinguished M.S. Thesis in STEM</span><span class="award-year">2017</span></li>
       <li><span>NASA ISGC Fellowship</span><span class="award-year">2015–2016</span></li>
     </ul>
-    <!--<p class="small-note">Complete list in <a href="https://heatherw3521.github.io/H_Wilber_CV_short.pdf">CV <span class="sr-only">(PDF)</span></a>.</p>-->
   </section>
 
   <!-- ═══ CONTACT ═══ -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <main class="contact-grid">
-      <main>
+  <section id="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Contact</h2>
+    <div class="contact-grid">
+      <div>
         <p class="contact-label">email</p>
         <p class="contact-val"><a href="mailto:hdw27@uw.edu">hdw27 (at) uw (dot) edu</a></p>
-      </main>
-      <main>
+      </div>
+      <div>
         <p class="contact-label">office</p>
         <p class="contact-val">LEW 328</p>
-      </main>
-      <main>
+      </div>
+      <div>
         <p class="contact-label">address</p>
         <p class="contact-val">
           Department of Applied Mathematics<br>
@@ -396,8 +420,8 @@
           Lewis Hall #201, Box 353925<br>
           Seattle, WA 98195-3925
         </p>
-      </main>
-    </main>
+      </div>
+    </div>
   </section>
 
 </main>
