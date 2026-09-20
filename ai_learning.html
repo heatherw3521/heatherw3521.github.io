@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI in STEM Education | Heather Wilber</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&family=Archivo:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
     :root, [data-theme="light"] {
-      --bg: #fafaf8; --surface: #f2f1ed; --border: #d8d7d1;
-      --text: #1a1917; --muted: #6b6a65; --link: #2d5a8e; --link-hover: #1a3a5c;
+      --bg: #ffffff; --surface: #f2f1ed; --border: #0a0a0a;
+      --text: #0a0a0a; --muted: #4a4944; --link: #1b3a6b; --link-hover: #0a2547;
     }
     [data-theme="dark"] {
-      --bg: #141412; --surface: #1e1d1b; --border: #2e2d2a;
-      --text: #e8e7e2; --muted: #888780; --link: #7aabdb; --link-hover: #a8c8e8;
+      --bg: #0a0a0a; --surface: #171613; --border: #f2f2ef;
+      --text: #f2f2ef; --muted: #b6b5ae; --link: #7fa6de; --link-hover: #a8c8e8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { border-radius: 0 !important; }
     body {
       font-family: 'IBM Plex Mono', monospace;
       background: var(--bg);
@@ -29,12 +30,12 @@
     nav {
       position: sticky; top: 0; z-index: 100;
       background: var(--bg);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
       padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
       height: 52px;
     }
-    .nav-name { color: var(--text); font-weight: 500; font-size: 18px; }
+    .nav-name { color: var(--text); font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: -0.01em; }
     .nav-links {
       display: flex; gap: 1.5rem; list-style: none; align-items: center;
     }
@@ -45,9 +46,11 @@
     .nav-links a:hover { color: var(--text); text-decoration: none; }
     main { padding: 4rem 0 3rem; }
     h1 {
-      font-weight: 500; font-size: 26px;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 900; font-size: 32px;
       letter-spacing: -0.01em;
       margin-bottom: 1rem;
+      line-height: 1;
     }
     .subtitle {
       font-size: 16px;
@@ -64,14 +67,15 @@
     .section {
       margin-top: 2.5rem;
       padding-top: 2rem;
-      border-top: 1px solid var(--border);
+      border-top: 2px solid var(--border);
     }
     h2 {
-      font-weight: 500;
-      font-size: 15px;
-      letter-spacing: 0.12em;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--text);
       margin-bottom: 1rem;
     }
     ul { padding-left: 1.25rem; }
@@ -79,12 +83,13 @@
     .back-link {
       display: inline-block;
       margin-top: 2rem;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       padding: 6px 12px;
-      border-radius: 2px;
-      color: var(--muted);
+      font-weight: 700;
+      color: var(--text);
+      transition: background 0.1s, color 0.1s;
     }
-    .back-link:hover { text-decoration: none; color: var(--text); border-color: var(--text); }
+    .back-link:hover { text-decoration: none; color: var(--bg); background: var(--text); }
   </style>
 </head>
 <body>
@@ -104,13 +109,13 @@
       <p>Large language models and AI are becoming increasingly important core tools in industry and research in STEM-based fields. For learners and educators working in STEM, navigating the integration of AI into our practices can seem overwhelming. Much about AI and educational practice is still unknown, but we can figure things out together as a community. In that spirit, this page contains resources for students who want to use AI as they learn and for teachers wondering how to effectively incorporate and manage AI use in their curricula and classrooms. Please feel free to take, share, copy, modify, and make full use of these materials.</p>
     </div>
 
-    <div style="border-top: 1px solid var(--border); margin: 1.5rem 0 0; padding-top: 1.5rem;"></div>
+    <div style="border-top: 2px solid var(--border); margin: 1.5rem 0 0; padding-top: 1.5rem;"></div>
 
     <div class="section" style="margin-top: 0; padding-top: 0; border-top: none;">
       <h2>Resources for students on learning with AI</h2>
       <div class="prose">
         <p><a href="UsingAI_appliedmatheducation.pdf">Using AI for Learning in Applied Mathematics</a></p>
-        <p>This document highlights ways that LLMs can both support and harm learning. It points out risky ways to use them and productive ways to use them thoughtfully.</p>
+        <p>A quick overview highlighting ways that LLMs can both support and harm learning. It points out risky ways to use them and productive ways to use them thoughtfully.</p>
       </div>
     </div>
 
