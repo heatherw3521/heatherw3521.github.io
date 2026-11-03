@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fractional Diffusion Maze · Heather Wilber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=Archivo:wght@500;700;900&family=STIX+Two+Text:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Layout: two specimen plates (Brownian | Lévy) on a dark stage, controls and readouts below. Styled to match index.html. */
+:root, [data-theme="light"] {
+  --bg: #ffffff; --surface: #f2f1ed; --border: #0a0a0a;
+  --text: #0a0a0a; --muted: #4a4944; --link: #1b3a6b; --link-hover: #0a2547;
+  --ink: var(--text);
+  --line: #d6d4cc;
+  --accent: #1b3a6b;
+  --brown: #3f6db3;
+  --levy: #d9622b;
+  --stage: #0a0a0a;
+  --stage-ink: #c9c8c2;
+  --focus: #1b3a6b;
+  --f-display: 'Archivo', sans-serif;
+  --f-body: 'IBM Plex Serif', serif;
+  --f-mono: 'IBM Plex Mono', monospace;
+  --f-math: "STIX Two Text", "Cambria Math", "Times New Roman", serif;
+}
+[data-theme="dark"] {
+  --bg: #0a0a0a; --surface: #171613; --border: #f2f2ef;
+  --text: #f2f2ef; --muted: #b6b5ae; --link: #7fa6de; --link-hover: #a8c8e8;
+  --line: #3a3934;
+  --accent: #7fa6de; --brown: #8fb5ec; --levy: #f08a4b; --stage: #000000; --focus: #7fa6de;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { border-radius: 0 !important; }
+body { font-family: var(--f-mono); background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.75; transition: background 0.2s, color 0.2s; }
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 2px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px; transition: background 0.2s, border-color 0.2s; }
+.nav-name { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: -0.01em; color: var(--text); text-decoration: none; }
+.nav-name:hover { color: var(--text); text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a { font-size: 16px; color: var(--muted); letter-spacing: 0.04em; }
+.nav-links a:hover { color: var(--text); text-decoration: none; }
+.theme-toggle { background: none; border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.04em; padding: 3px 8px; transition: border-color 0.15s, color 0.15s; display: flex; align-items: center; gap: 5px; }
+.theme-toggle:hover { color: var(--text); border-color: var(--text); }
+@media (max-width: 640px) { .nav-links { display: none; } nav { padding: 0 16px; } }
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 2rem; display: grid; gap: 2rem; }
+@media (max-width: 640px) { .wrap { padding: 2rem 16px; } }
+h1, h2 { font-family: var(--f-display); text-wrap: balance; }
+h1 { font-weight: 900; font-size: 34px; letter-spacing: -0.01em; line-height: 1.1; }
+h2 { font-weight: 900; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+.eyebrow { font: 500 13px/1 var(--f-mono); letter-spacing: 0.04em; color: var(--muted); }
+.head { display: grid; gap: 0.85rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+.lede { max-width: 68ch; font-family: var(--f-body); font-size: 16px; line-height: 1.8; }
+.lede b { font-weight: 600; }
+.cite { font-family: var(--f-mono); font-size: 0.7em; margin-left: 1px; }
+.refs { max-width: 68ch; padding-left: 1.6rem; font-family: var(--f-body); font-size: 13px; line-height: 1.6; color: var(--muted); display: grid; gap: 2px; }
+.refs li::marker { font-family: var(--f-mono); font-size: 12px; }
+.refs li:target { color: var(--text); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.math { font-family: var(--f-math); font-style: italic; font-size: 1.08em; }
+
+/* stage */
+.stage { background: var(--stage); color: var(--stage-ink); border: 2px solid var(--border); padding: clamp(12px, 2vw, 22px); display: grid; gap: 16px; }
+.panels { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 2vw, 22px); }
+@media (max-width: 760px) { .panels { grid-template-columns: 1fr; } }
+.panel { margin: 0; display: grid; gap: 10px; min-width: 0; }
+.panel figcaption { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font: 700 16px/1.2 var(--f-display); color: #f2f2ef; }
+.panel figcaption .sub { font: 400 13px/1.2 var(--f-mono); color: #9e9d96; }
+.sw { width: 12px; height: 3px; display: inline-block; transform: translateY(-4px); }
+.sw.brown { background: #8fb5ec; } .sw.levy { background: #f08a4b; }
+.cv { position: relative; width: 100%; max-width: 100%; aspect-ratio: 1; }
+.cv canvas { width: 100%; height: 100%; display: block; touch-action: none; cursor: crosshair; }
+.busy { position: absolute; left: 10px; top: 10px; background: rgba(10, 10, 10, 0.85); color: #f2f2ef; border: 1px solid #4a4944; padding: 6px 10px; font: 12px/1.3 var(--f-mono); }
+.stats { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; margin: 0; }
+.stats div { min-width: 0; }
+.note-ov { position: absolute; left: 10px; right: 10px; bottom: 10px; background: rgba(10, 10, 10, 0.88); color: #f2f2ef; border: 1px solid #4a4944; padding: 8px 10px; font: 13px/1.5 var(--f-body); }
+.stats dt { font: 500 11px/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: #9e9d96; }
+.stats dd { margin: 2px 0 0; font: 500 16px/1.3 var(--f-mono); font-variant-numeric: tabular-nums; color: #f2f2ef; }
+.stats dd .note { font: 400 12px var(--f-body); color: #9e9d96; }
+
+.transport { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; }
+.play { width: 42px; height: 42px; border: 1px solid #f2f2ef; background: transparent; color: #f2f2ef; cursor: pointer; display: grid; place-items: center; transition: background 0.1s, color 0.1s; }
+.play:hover { background: #f2f2ef; color: #0a0a0a; }
+.play svg { width: 16px; height: 16px; fill: currentColor; }
+.tread { font: 500 15px/1.2 var(--f-mono); font-variant-numeric: tabular-nums; color: #f2f2ef; min-width: 9.5ch; text-align: right; }
+.tread small { display: block; font: 400 11px var(--f-mono); color: #9e9d96; letter-spacing: 0.04em; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.stage input[type=range] { accent-color: #f08a4b; }
+.legend { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: center; }
+.legend .lab { font: 500 11px/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: #9e9d96; }
+.legend canvas { width: 100%; height: 12px; display: block; }
+.ticks { grid-column: 2; display: flex; justify-content: space-between; font: 11px var(--f-mono); color: #9e9d96; }
+.hover { font: 13px/1.4 var(--f-mono); color: #b6b5ae; min-height: 1.4em; }
+
+/* controls */
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.ctl { background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.ctl .k { font: 500 11px/1.3 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.ctl .k output { color: var(--text); font-size: 13px; letter-spacing: 0; }
+.ctl .hint { font-family: var(--f-body); font-size: 13px; line-height: 1.6; color: var(--muted); }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button, .btn { font: 400 12.5px/1 var(--f-mono); padding: 6px 9px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: border-color 0.15s, color 0.15s; }
+.seg button:hover, .btn:hover { color: var(--text); }
+.seg button[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* chart */
+.card { border-top: 2px solid var(--border); padding-top: 2rem; display: grid; gap: 1rem; min-width: 0; }
+.card .row { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 18px; }
+.key { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.key span { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 16px; height: 3px; display: inline-block; }
+#chart { width: 100%; height: 240px; display: block; }
+.chart-note { font-family: var(--f-body); font-size: 14px; line-height: 1.7; color: var(--muted); max-width: 75ch; }
+
+/* method */
+.method { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2rem; }
+@media (max-width: 860px) { .method { grid-template-columns: 1fr; } }
+.method p, .method li { max-width: 66ch; }
+.method .prose { display: grid; gap: 1rem; font-family: var(--f-body); font-size: 15px; line-height: 1.8; }
+.eq { font-family: var(--f-math); font-size: 18px; line-height: 1.6; padding: 12px 14px; border-left: 2px solid var(--border); background: var(--surface); overflow-x: auto; white-space: nowrap; }
+.eq i { font-style: italic; }
+.eq sub, .eq sup { font-size: 0.7em; }
+.method ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.status { display: grid; gap: 1rem; align-content: start; }
+.status table { width: 100%; border-collapse: collapse; font: 13px/1.4 var(--f-mono); font-variant-numeric: tabular-nums; }
+.status th { text-align: left; font: 500 11px/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 6px 8px 6px 0; border-bottom: 2px solid var(--border); }
+.status td { padding: 7px 8px 7px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.status td:first-child { color: var(--muted); }
+.status .hint { font-family: var(--f-body); line-height: 1.6; }
+.tbl { overflow-x: auto; }
+sup { line-height: 0; }
+
+footer { padding: 2rem; text-align: center; font-size: 11px; color: var(--muted); letter-spacing: 0.04em; border-top: 2px solid var(--border); }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="index.html" class="nav-name">Heather Wilber</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html#about">about</a></li>
+      <li><a href="index.html#projects">projects</a></li>
+      <li><a href="index.html#research">research</a></li>
+      <li><a href="ai_learning.html">AI in STEM</a></li>
+      <li><a href="index.html#contact">contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <span id="themeIcon">○</span>
+      <span id="themeLabel">dark</span>
+    </button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="head">
+    <p class="eyebrow">Fractional Laplacian · how to jump over walls</p>
+    <h1>Fractional Diffusion Maze</h1>
+    <p class="lede">Spatial fractional derivatives help us model processes that are both diffusive and nonlocal, with particles that can occasionally "jump" or "teleport", spattering through space via Lévy flights. It captures many phenomena more accurately than classical diffusion models. These include the migration patterns of sharks and other large predators<sup class="cite"><a href="#ref-1">[1]</a></sup>, patterns in disease spread<sup class="cite"><a href="#ref-2">[2]</a></sup>, sediment transport in riverbeds<sup class="cite"><a href="#ref-3">[3]</a></sup>, and the exploratory strategies of various microorganisms<sup class="cite"><a href="#ref-4">[4]</a></sup>. Here we build a simple model that illustrates the difference between fractional and standard diffusion. The left window shows <b>ordinary diffusion</b>: Brownian walkers creep along corridors and can never reach a sealed chamber. The right window shows <b>fractional diffusion</b>: Lévy walkers can teleport, taking heavy-tailed jumps that sail over walls, so ink appears in places no corridor can reach.</p>
+    <ol class="refs" aria-label="References">
+      <li id="ref-1">D.W. Sims et al. — <em>Scaling laws of marine predator search behaviour</em>, Nature 451 (2008). <a href="https://doi.org/10.1038/nature06518">doi</a></li>
+      <li id="ref-2">D. Brockmann, L. Hufnagel, T. Geisel — <em>The scaling laws of human travel</em>, Nature 439 (2006). <a href="https://doi.org/10.1038/nature04292">doi</a></li>
+      <li id="ref-3">R. Schumer, M.M. Meerschaert, B. Baeumer — <em>Fractional advection-dispersion equations for modeling transport at the Earth surface</em>, J. Geophys. Res. 114 (2009). <a href="https://doi.org/10.1029/2008JF001246">doi</a></li>
+      <li id="ref-4">G. Ariel et al. — <em>Swarming bacteria migrate by Lévy walk</em>, Nature Communications 6 (2015). <a href="https://doi.org/10.1038/ncomms9396">doi</a></li>
+    </ol>
+  </header>
+
+  <section class="stage" aria-label="Simulation">
+    <div class="panels">
+      <figure class="panel">
+        <figcaption><span class="sw brown"></span>Brownian motion <span class="sub" id="brown-sub">α = 2 · reflecting walls</span></figcaption>
+        <div class="cv"><canvas id="cv-brown" width="624" height="624" aria-label="Brownian diffusion field"></canvas><div class="busy" id="busy-brown" hidden></div><div class="note-ov" id="note-brown" hidden></div></div>
+        <dl class="stats">
+          <div><dt>In sealed-off chambers</dt><dd id="un-brown">–</dd></div>
+          <div><dt>In the probe tile</dt><dd id="pr-brown">–</dd></div>
+          <div class="alive" hidden><dt id="alive-lab-brown">Not yet absorbed</dt><dd id="alive-brown">–</dd></div>
+        </dl>
+      </figure>
+      <figure class="panel">
+        <figcaption><span class="sw levy"></span>Lévy flights <span class="sub" id="levy-sub">α = 1.00 · jumps pass over walls</span></figcaption>
+        <div class="cv"><canvas id="cv-levy" width="624" height="624" aria-label="Fractional diffusion field"></canvas><div class="busy" id="busy-levy" hidden></div><div class="note-ov" id="note-levy" hidden></div></div>
+        <dl class="stats">
+          <div><dt>In sealed-off chambers</dt><dd id="un-levy">–</dd></div>
+          <div><dt>In the probe tile</dt><dd id="pr-levy">–</dd></div>
+          <div class="alive" hidden><dt id="alive-lab-levy">Not yet absorbed</dt><dd id="alive-levy">–</dd></div>
+        </dl>
+      </figure>
+    </div>
+    <div class="transport">
+      <button class="play" id="play" aria-label="Play"><svg viewBox="0 0 16 16" id="play-ic"><path d="M4 2.5v11l9.5-5.5z"/></svg></button>
+      <input type="range" id="time" min="-2" max="4" step="0.01" value="-0.5" aria-label="Time (log scale)">
+      <div class="tread"><span id="t-read">T = 0.32</span><small>corridor times</small></div>
+    </div>
+    <div class="legend">
+      <span class="lab" id="legend-lab">Probability per tile</span>
+      <canvas id="cbar" width="600" height="12"></canvas>
+      <div class="ticks" id="cticks"></div>
+    </div>
+    <p class="hover" id="hover">Hover a tile to read both values. Click to act with the tool chosen below.</p>
+  </section>
+
+  <section class="controls" aria-label="Controls">
+    <div class="ctl">
+      <label class="k" for="alpha">Stability index α <output id="alpha-out">1.00</output></label>
+      <input type="range" id="alpha" min="0.2" max="1.95" step="0.05" value="1">
+      <p class="hint">Jump lengths have tail ∝ r<sup>−2−α</sup>. Smaller α means longer, more frequent leaps. α → 2 recovers the left panel.</p>
+    </div>
+    <div class="ctl">
+      <span class="k">Walls</span>
+      <div class="seg" id="wallmode">
+        <button data-v="over" aria-pressed="true">Jumped over</button>
+        <button data-v="absorb" aria-pressed="false">Absorb walkers</button>
+        <button data-v="sight" aria-pressed="false">Block line of sight</button>
+      </div>
+      <p class="hint" id="wall-hint"></p>
+      <div id="drip-box" hidden style="display:grid;gap:8px">
+        <span class="k">Ink source</span>
+        <div class="seg" id="drip">
+          <button data-v="1" aria-pressed="true">Steady drip</button>
+          <button data-v="0" aria-pressed="false">Single drop</button>
+        </div>
+        <p class="hint" id="drip-hint"></p>
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="k">Maze</span>
+      <div class="seg" id="preset">
+        <button data-v="sealed" aria-pressed="true">Sealed chambers</button>
+        <button data-v="spiral" aria-pressed="false">Spiral</button>
+        <button data-v="maze" aria-pressed="false">Random maze</button>
+        <button data-v="split" aria-pressed="false">Split box</button>
+      </div>
+      <button class="btn" id="reshuffle" hidden>Generate another maze</button>
+    </div>
+    <div class="ctl">
+      <span class="k">Click on the maze to</span>
+      <div class="seg" id="tool">
+        <button data-v="source" aria-pressed="true">Move ink drop</button>
+        <button data-v="probe" aria-pressed="false">Move probe</button>
+        <button data-v="wall" aria-pressed="false">Add walls</button>
+        <button data-v="open" aria-pressed="false">Remove walls</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="k">Color range</span>
+      <div class="seg" id="decades">
+        <button data-v="3" aria-pressed="false">3 decades</button>
+        <button data-v="4" aria-pressed="true">4</button>
+        <button data-v="6" aria-pressed="false">6</button>
+        <button data-v="8" aria-pressed="false">8</button>
+      </div>
+      <p class="hint">Lévy tails are algebraic, so with a wide range the whole maze lights up almost at once. A narrow range shows where the mass actually concentrates.</p>
+      <span class="k">Grid</span>
+      <div class="seg" id="grid">
+        <button data-v="4" aria-pressed="true">4 cells / corridor</button>
+        <button data-v="6" aria-pressed="false">6</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Probe arrival">
+    <div class="row">
+      <h2>Arrival at the probe tile</h2>
+      <div class="key"><span><i style="background:var(--brown)"></i>Brownian</span><span><i style="background:var(--levy)"></i>Lévy</span></div>
+    </div>
+    <canvas id="chart" aria-label="Probability in the probe tile over time, log–log"></canvas>
+    <p class="chart-note" id="chart-note"></p>
+  </section>
+
+  <section class="card method" aria-label="What is being solved">
+    <div class="prose">
+      <h2>What is being solved</h2>
+      <div id="mode-text" style="display:grid;gap:12px"></div>
+      <ul>
+        <li><b>Space.</b> Each corridor tile is a 4×4 (or 6×6) block of cells. The jump rate between cells <span class="math">i, j</span> is <span class="math">C</span>|<span class="math">k</span>|<sup>−2−α</sup> in grid units, plus a nearest-neighbour correction −<span class="math">C</span>ζ(α/2)β(α/2) that makes the lattice symbol |ξ|<sup>α</sup> + O(|ξ|<sup>4</sup>). Without it the operator is off by up to 25% at α = 1.7. As α → 2 the weights become the 5-point Laplacian exactly.</li>
+        <li id="mode-space"></li>
+        <li><b>Time.</b> There is no time stepping. The solver builds a Krylov basis for <span class="math">u</span>(<span class="math">t</span>) = e<sup>−tA</sup><span class="math">u</span><sub>0</sub> (Lanczos, full reorthogonalisation, the constant null vector removed exactly) and keeps going until the a-posteriori residual bound ‖<span class="math">u</span> − <span class="math">u</span><sub>m</sub>‖₂ ≤ ‖<span class="math">u</span><sub>0</sub>‖ β<sub>m</sub>∫₀<sup>t</sup>|e<sub>m</sub><sup>T</sup>e<sup>−τT<sub>m</sub></sup>e<sub>1</sub>|dτ is below 10<sup>−12</sup> for every time on the slider. The bound only needs the operator to be symmetric and positive semidefinite, which holds in all three wall modes. Scrubbing the slider evaluates that one solution; nothing accumulates.</li>
+        <li><b>Time units.</b> Both panels use the same <span class="math">T</span> = <span class="math">t</span>/τ<sub>α</sub>, where τ<sub>α</sub> = <span class="math">w</span><sup>α</sup> is the time each process needs to spread about one corridor width <span class="math">w</span> (diffusivity 1).</li>
+      </ul>
+    </div>
+    <div class="status">
+      <h2>Solver checks</h2>
+      <div class="tbl"><table>
+        <thead><tr><th></th><th>Brownian</th><th>Lévy</th></tr></thead>
+        <tbody>
+          <tr><td>Unknowns</td><td id="s-n-brown">–</td><td id="s-n-levy">–</td></tr>
+          <tr><td>Krylov dim.</td><td id="s-m-brown">–</td><td id="s-m-levy">–</td></tr>
+          <tr><td>Error bound</td><td id="s-b-brown">–</td><td id="s-b-levy">–</td></tr>
+          <tr><td id="mass-lab">|mass − 1| now</td><td id="s-mass-brown">–</td><td id="s-mass-levy">–</td></tr>
+          <tr><td>Solve time</td><td id="s-ms-brown">–</td><td id="s-ms-levy">–</td></tr>
+        </tbody>
+      </table></div>
+      <p class="hint" style="color:var(--muted);font-size:13px">Offline checks of this exact code: the Krylov solution matches a dense eigendecomposition to 4×10<sup>−14</sup> for α from 0.3 to 2; the operator's symbol matches |ξ|<sup>α</sup> to 2×10<sup>−6</sup> at ξ = 0.05; and refining the grid from 4 to 8 cells per corridor changes probe values by under 0.4%. The absorbing and line-of-sight operators were rebuilt independently in Python (exact segment–square visibility tests, brute-force lattice sums for the killing rate); the visibility graphs are identical and the solutions agree to the reference's own accuracy. Switch the grid to 6 cells to see how much each picture moves.</p>
+    </div>
+  </section>
+</main>
+
+<script id="core-src">
+// Numerical core: regional fractional Laplacian on a masked grid + Lanczos exponential.
+// Shared by the page's workers and the Node test harness.
+
+function lgamma(x) {
+  const g = 7, c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+    771.32342877765313, -176.61502916214059, 12.507343278686905,
+    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (x < 0.5) return Math.log(Math.PI / Math.abs(Math.sin(Math.PI * x))) - lgamma(1 - x);
+  x -= 1;
+  let a = c[0];
+  const t = x + g + 0.5;
+  for (let i = 1; i < g + 2; i++) a += c[i] / (x + i);
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+}
+
+// Cohen–Villegas–Zagier acceleration of sum_{k>=0} (-1)^k a(k)
+function altSum(a, n) {
+  let d = Math.pow(3 + Math.sqrt(8), n); d = (d + 1 / d) / 2;
+  let b = -1, c = -d, s = 0;
+  for (let k = 0; k < n; k++) {
+    c = b - c; s += c * a(k);
+    b = (k + n) * (k - n) * b / ((k + 0.5) * (k + 1));
+  }
+  return s / d;
+}
+function zeta(s) { // valid for 0<s<1 (and beyond, s != 1)
+  const eta = altSum(k => Math.pow(k + 1, -s), 40);
+  return eta / (1 - Math.pow(2, 1 - s));
+}
+function dirichletBeta(s) { return altSum(k => Math.pow(2 * k + 1, -s), 40); }
+
+// C_{2,s}: (-Δ)^s u = C PV ∫ (u(x)-u(y)) |x-y|^{-2-2s} dy in 2D
+function fracConst(s) {
+  return s * Math.pow(4, s) * Math.exp(lgamma(1 + s) - lgamma(1 - s)) / Math.PI;
+}
+// Extra nearest-neighbour weight making the lattice symbol |ξ|^{2s} + O(|ξ|^4)
+function nnBoost(s) { return -fracConst(s) * zeta(s) * dirichletBeta(s); }
+
+// ---------- FFT ----------
+function makeFFT(F) {
+  const bits = Math.round(Math.log2(F));
+  const rev = new Uint32Array(F);
+  for (let i = 0; i < F; i++) { let r = 0, x = i; for (let b = 0; b < bits; b++) { r = (r << 1) | (x & 1); x >>= 1; } rev[i] = r; }
+  const cs = new Float64Array(F / 2), sn = new Float64Array(F / 2);
+  for (let i = 0; i < F / 2; i++) { cs[i] = Math.cos(2 * Math.PI * i / F); sn[i] = Math.sin(2 * Math.PI * i / F); }
+  const tr = new Float64Array(F), ti = new Float64Array(F);
+  function fft1(re, im, off, stride, inv) {
+    for (let i = 0; i < F; i++) { const j = off + rev[i] * stride; tr[i] = re[j]; ti[i] = im[j]; }
+    for (let size = 2; size <= F; size <<= 1) {
+      const half = size >> 1, step = F / size;
+      for (let i = 0; i < F; i += size) {
+        for (let j = 0, k = 0; j < half; j++, k += step) {
+          const wr = cs[k], wi = inv ? sn[k] : -sn[k];
+          const a = i + j, b = a + half;
+          const xr = tr[b] * wr - ti[b] * wi, xi = tr[b] * wi + ti[b] * wr;
+          tr[b] = tr[a] - xr; ti[b] = ti[a] - xi; tr[a] += xr; ti[a] += xi;
+        }
+      }
+    }
+    for (let i = 0; i < F; i++) { const j = off + i * stride; re[j] = tr[i]; im[j] = ti[i]; }
+  }
+  // 2D transform; rowsUsed limits row passes to rows that can be nonzero (forward) / are needed (inverse)
+  function fft2(re, im, inv, rowsUsed) {
+    if (!inv) {
+      for (let r = 0; r < rowsUsed; r++) fft1(re, im, r * F, 1, false);
+      for (let c = 0; c < F; c++) fft1(re, im, c, F, false);
+    } else {
+      for (let c = 0; c < F; c++) fft1(re, im, c, F, true);
+      for (let r = 0; r < rowsUsed; r++) fft1(re, im, r * F, 1, true);
+      const sc = 1 / (F * F);
+      for (let i = 0; i < rowsUsed * F; i++) { re[i] *= sc; im[i] *= sc; }
+    }
+  }
+  return fft2;
+}
+
+// ---------- Operators ----------
+// mask: Uint8Array N*N, 1 = open (in Ω). Returns operator on compressed vectors over open cells.
+// opts.absorb: walkers whose jump lands outside Ω are killed (u = 0 on R² \ Ω).
+function buildLevy(mask, N, alpha, opts) {
+  const absorb = !!(opts && opts.absorb);
+  const s = alpha / 2;
+  let F = 1; while (F < 2 * N - 1) F <<= 1;
+  const fft2 = makeFFT(F);
+  const C = fracConst(s), boost = nnBoost(s);
+  const kr = new Float64Array(F * F), ki = new Float64Array(F * F);
+  for (let dy = -(N - 1); dy <= N - 1; dy++) for (let dx = -(N - 1); dx <= N - 1; dx++) {
+    if (dx === 0 && dy === 0) continue;
+    const r2 = dx * dx + dy * dy;
+    let w = C * Math.pow(r2, -1 - s);
+    if (r2 === 1) w += boost;
+    kr[((dy + F) % F) * F + ((dx + F) % F)] = w;
+  }
+  fft2(kr, ki, false, F);
+  const Kh = kr; // real (kernel even); imaginary part is roundoff
+  const idx = []; for (let i = 0; i < N * N; i++) if (mask[i]) idx.push(i);
+  const n = idx.length;
+  const pos = new Int32Array(n); // position in F*F array
+  for (let a = 0; a < n; a++) { const i = idx[a]; pos[a] = Math.floor(i / N) * F + (i % N); }
+  const re = new Float64Array(F * F), im = new Float64Array(F * F);
+  function conv(x, out) {
+    re.fill(0); im.fill(0);
+    for (let a = 0; a < n; a++) re[pos[a]] = x[a];
+    fft2(re, im, false, N);
+    for (let i = 0; i < F * F; i++) { re[i] *= Kh[i]; im[i] *= Kh[i]; }
+    fft2(re, im, true, N);
+    for (let a = 0; a < n; a++) out[a] = re[pos[a]];
+  }
+  const deg = new Float64Array(n);
+  conv(new Float64Array(n).fill(1), deg);
+  // Killing rate: total jump rate on the infinite lattice minus the rate of jumps that land in Ω.
+  // Σ_{k≠0} |k|^{-2-2s} = 4 ζ(1+s) β(1+s) (lattice sum over Z², exact).
+  const diag = Float64Array.from(deg);
+  let kill = null;
+  if (absorb) {
+    const wTot = 4 * C * zeta(1 + s) * dirichletBeta(1 + s) + 4 * boost;
+    kill = new Float64Array(n);
+    for (let a = 0; a < n; a++) {
+      const i = idx[a], x = i % N, y = Math.floor(i / N);
+      let faces = 0; // wall or box-edge faces: the nearest-neighbour correction uses a ghost value −u (Dirichlet at the face)
+      if (x === 0 || !mask[i - 1]) faces++; if (x === N - 1 || !mask[i + 1]) faces++;
+      if (y === 0 || !mask[i - N]) faces++; if (y === N - 1 || !mask[i + N]) faces++;
+      kill[a] = (wTot - deg[a]) + (opts.ghost === false ? 0 : faces * boost);
+      diag[a] += kill[a];
+    }
+  }
+  const tmp = new Float64Array(n);
+  function apply(x, y) {
+    conv(x, tmp);
+    for (let a = 0; a < n; a++) y[a] = diag[a] * x[a] - tmp[a];
+  }
+  return { n, idx: Int32Array.from(idx), apply, deg, kill, C, boost, F };
+}
+
+// Is the closed segment between cell centres (x0,y0)-(x1,y1) free of wall cells?
+// Cells are closed unit squares; a segment through a shared corner touches all four cells there.
+function lineOfSight(mask, N, x0, y0, x1, y1) {
+  let dx = x1 - x0, dy = y1 - y0; const sx = Math.sign(dx), sy = Math.sign(dy); dx = Math.abs(dx); dy = Math.abs(dy);
+  let x = x0, y = y0, ix = 0, iy = 0;
+  while (ix < dx || iy < dy) {
+    const dec = (1 + 2 * ix) * dy - (1 + 2 * iy) * dx;
+    if (dec === 0) {
+      if (!mask[y * N + x + sx] || !mask[(y + sy) * N + x]) return false;
+      x += sx; y += sy; ix++; iy++;
+    } else if (dec < 0) { x += sx; ix++; } else { y += sy; iy++; }
+    if (!mask[y * N + x]) return false;
+  }
+  return true;
+}
+// Line-of-sight Lévy operator on a cell set: jumps only between mutually visible cells (censored otherwise).
+async function buildLevySight(mask, N, alpha, cells, shouldAbort) {
+  const s = alpha / 2, C = fracConst(s), boost = nnBoost(s), n = cells.length;
+  const wTab = new Float64Array(N * N); // weight by (|dy|, |dx|)
+  for (let dy = 0; dy < N; dy++) for (let dx = 0; dx < N; dx++) {
+    const r2 = dx * dx + dy * dy; if (!r2) continue;
+    wTab[dy * N + dx] = C * Math.pow(r2, -1 - s) + (r2 === 1 ? boost : 0);
+  }
+  const xs = new Int32Array(n), ys = new Int32Array(n);
+  for (let a = 0; a < n; a++) { xs[a] = cells[a] % N; ys[a] = Math.floor(cells[a] / N); }
+  // pass 1: visibility of every pair a<b into a bitset, row counts
+  const bits = new Uint32Array(Math.ceil(n * (n - 1) / 2 / 32) + 1), cnt = new Int32Array(n);
+  let bit = 0;
+  for (let a = 0; a < n; a++) {
+    for (let b = a + 1; b < n; b++, bit++) {
+      if (lineOfSight(mask, N, xs[a], ys[a], xs[b], ys[b])) { bits[bit >>> 5] |= 1 << (bit & 31); cnt[a]++; cnt[b]++; }
+    }
+    if (shouldAbort && a % 48 === 47) { await new Promise(r => setTimeout(r, 0)); if (shouldAbort()) return null; }
+  }
+  const ptr = new Int32Array(n + 1); for (let a = 0; a < n; a++) ptr[a + 1] = ptr[a] + cnt[a];
+  const ci = new Int32Array(ptr[n]), wi = new Int32Array(ptr[n]), fill = ptr.slice(0, n), deg = new Float64Array(n);
+  bit = 0;
+  for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++, bit++) {
+    if (!(bits[bit >>> 5] & (1 << (bit & 31)))) continue;
+    const k = Math.abs(ys[b] - ys[a]) * N + Math.abs(xs[b] - xs[a]);
+    ci[fill[a]] = b; wi[fill[a]++] = k; ci[fill[b]] = a; wi[fill[b]++] = k;
+    deg[a] += wTab[k]; deg[b] += wTab[k];
+  }
+  function apply(x, y) {
+    for (let a = 0; a < n; a++) { let v = deg[a] * x[a]; for (let k = ptr[a]; k < ptr[a + 1]; k++) v -= wTab[wi[k]] * x[ci[k]]; y[a] = v; }
+  }
+  return { n, idx: Int32Array.from(cells), apply, deg, nnz: ptr[n], C, boost };
+}
+
+// Classical (α = 2) operator: 5-point Laplacian with no-flux walls, restricted to a cell set
+// absorb: Dirichlet walls at the cell faces (ghost value −u), i.e. kill rate 2 per wall face.
+function buildBrownian(mask, N, cells, absorb) {
+  const n = cells.length, where = new Int32Array(N * N).fill(-1);
+  for (let a = 0; a < n; a++) where[cells[a]] = a;
+  const nb = [];
+  for (let a = 0; a < n; a++) {
+    const i = cells[a], x = i % N, y = Math.floor(i / N), L = [];
+    if (x > 0 && where[i - 1] >= 0) L.push(where[i - 1]);
+    if (x < N - 1 && where[i + 1] >= 0) L.push(where[i + 1]);
+    if (y > 0 && where[i - N] >= 0) L.push(where[i - N]);
+    if (y < N - 1 && where[i + N] >= 0) L.push(where[i + N]);
+    nb.push(Int32Array.from(L));
+  }
+  const dg = new Float64Array(n);
+  for (let a = 0; a < n; a++) dg[a] = nb[a].length + (absorb ? 2 * (4 - nb[a].length) : 0);
+  function apply(x, y) {
+    for (let a = 0; a < n; a++) { const L = nb[a]; let v = dg[a] * x[a]; for (let k = 0; k < L.length; k++) v -= x[L[k]]; y[a] = v; }
+  }
+  return { n, idx: Int32Array.from(cells), apply };
+}
+
+// 4-connected component containing cell `start`
+function component(mask, N, start) {
+  const seen = new Uint8Array(N * N), out = [], st = [start]; seen[start] = 1;
+  while (st.length) {
+    const i = st.pop(); out.push(i);
+    const x = i % N, y = Math.floor(i / N);
+    const nbr = [x > 0 ? i - 1 : -1, x < N - 1 ? i + 1 : -1, y > 0 ? i - N : -1, y < N - 1 ? i + N : -1];
+    for (const j of nbr) if (j >= 0 && mask[j] && !seen[j]) { seen[j] = 1; st.push(j); }
+  }
+  out.sort((a, b) => a - b);
+  return out;
+}
+
+// ---------- Symmetric tridiagonal eigensolver (JAMA tql2) ----------
+// d: diag (len m), e: off-diagonal with e[i] coupling i-1,i (e[0] ignored).
+// rows: which rows of the eigenvector matrix to accumulate (null = all). Returns {d, Z} where
+// Z[r*m + k] = component `rows[r]` of eigenvector k.
+function tql2(dIn, eIn, rows) {
+  const m = dIn.length, d = Float64Array.from(dIn), e = new Float64Array(m);
+  for (let i = 1; i < m; i++) e[i - 1] = eIn[i];
+  const R = rows || Array.from({ length: m }, (_, i) => i), nr = R.length;
+  const Z = new Float64Array(nr * m);
+  for (let r = 0; r < nr; r++) Z[r * m + R[r]] = 1;
+  let f = 0, tst1 = 0; const eps = Math.pow(2, -52);
+  for (let l = 0; l < m; l++) {
+    tst1 = Math.max(tst1, Math.abs(d[l]) + Math.abs(e[l]));
+    let mm = l; while (mm < m) { if (Math.abs(e[mm]) <= eps * tst1) break; mm++; }
+    if (mm > l) {
+      let iter = 0;
+      do {
+        if (++iter > 200) throw new Error('tql2 did not converge');
+        let g = d[l], p = (d[l + 1] - g) / (2 * e[l]), r = Math.hypot(p, 1);
+        if (p < 0) r = -r;
+        d[l] = e[l] / (p + r); d[l + 1] = e[l] * (p + r);
+        const dl1 = d[l + 1]; let h = g - d[l];
+        for (let i = l + 2; i < m; i++) d[i] -= h;
+        f += h; p = d[mm];
+        let c = 1, c2 = c, c3 = c, s = 0, s2 = 0; const el1 = e[l + 1];
+        for (let i = mm - 1; i >= l; i--) {
+          c3 = c2; c2 = c; s2 = s;
+          g = c * e[i]; h = c * p; r = Math.hypot(p, e[i]);
+          e[i + 1] = s * r; s = e[i] / r; c = p / r;
+          p = c * d[i] - s * g; d[i + 1] = h + s * (c * g + s * d[i]);
+          for (let k = 0; k < nr; k++) {
+            const o = k * m; h = Z[o + i + 1];
+            Z[o + i + 1] = s * Z[o + i] + c * h; Z[o + i] = c * Z[o + i] - s * h;
+          }
+        }
+        p = -s * s2 * c3 * el1 * e[l] / dl1; e[l] = s * p; d[l] = c * p;
+      } while (Math.abs(e[l]) > eps * tst1);
+    }
+    d[l] += f; e[l] = 0;
+  }
+  return { d, Z };
+}
+
+// phi(t,θ) = ∫_0^t e^{-τθ} dτ
+function phi1(t, th) { return th * t < 1e-8 ? t * (1 - th * t / 2) : (1 - Math.exp(-t * th)) / th; }
+
+// ∫_0^tmax |e_m^T exp(-τT) e_1| dτ, using eigen-data (Z rows 0 and m-1, eigenvalues d).
+// Upper Riemann sum on a log-spaced grid (max of the two endpoint values on each interval).
+// drip = true: the integrand is |e_m^T T^{-1}(I - e^{-τT}) e_1| (constant-source solution).
+function residualIntegral(Z, d, m, tmax, drip) {
+  const K = 900; let prevT = 0, prevG = 0, sum = 0;
+  for (let i = 0; i < K; i++) {
+    const t = tmax * Math.pow(10, -9 + 9 * i / (K - 1));
+    let g = 0;
+    if (drip) for (let k = 0; k < m; k++) g += Z[k] * Z[m + k] * phi1(t, Math.max(d[k], 0));
+    else for (let k = 0; k < m; k++) g += Z[k] * Z[m + k] * Math.exp(-t * Math.max(d[k], 0));
+    g = Math.abs(g);
+    sum += (t - prevT) * Math.max(g, prevG);
+    prevT = t; prevG = g;
+  }
+  return sum;
+}
+
+// ---------- Lanczos exponential with full reorthogonalisation ----------
+// Approximates u(t) = exp(-tA) u0 for all 0 <= t <= tmax with a rigorous a-posteriori bound
+//   ||u(t) - u_m(t)||_2 <= ||u0|| β_m ∫_0^t |e_m^T exp(-τT_m) e_1| dτ
+// (valid because A is symmetric positive semidefinite, so exp(-tA) is a 2-norm contraction).
+async function lanczosExp(op, u0, opts) {
+  const { tmax, tol = 1e-12, maxM = op.n, onProgress, shouldAbort, yieldEvery = 16 } = opts;
+  const n = op.n;
+  // Deflate the exact null vector (constant on the cell set): A·1 = 0 and A is symmetric, so
+  // exp(-tA)u0 = mean·1 + exp(-tA)(u0 - mean·1), and the Krylov space of the second part stays ⊥ 1.
+  const deflate = opts.deflate !== false;
+  let mean = 0; if (deflate) { for (let a = 0; a < n; a++) mean += u0[a]; mean /= n; }
+  const r0 = new Float64Array(n); for (let a = 0; a < n; a++) r0[a] = u0[a] - mean;
+  u0 = r0;
+  let nrm = 0; for (let a = 0; a < n; a++) nrm += u0[a] * u0[a]; nrm = Math.sqrt(nrm);
+  if (nrm < 1e-300) return { m: 0, n, theta: new Float64Array(0), S: new Float64Array(0), c: new Float64Array(0), V: new Float64Array(0), bound: 0, exact: true, base: mean };
+  const V = []; const al = [], be = [0];
+  let v = new Float64Array(n); for (let a = 0; a < n; a++) v[a] = u0[a] / nrm;
+  V.push(v);
+  const w = new Float64Array(n), h = [];
+  let nextCheck = 24, bound = Infinity, boundDrip = 0, j = 0, exact = false;
+  for (j = 0; j < maxM; j++) {
+    op.apply(V[j], w);
+    // CGS2 against 1 and all previous vectors (this also removes the α_j, β_j components)
+    for (let pass = 0; pass < 2; pass++) {
+      if (deflate) { let s1 = 0; for (let a = 0; a < n; a++) s1 += w[a]; s1 /= n; for (let a = 0; a < n; a++) w[a] -= s1; }
+      for (let i = 0; i <= j; i++) { const Vi = V[i]; let s = 0; for (let a = 0; a < n; a++) s += Vi[a] * w[a]; h[i] = s; if (pass === 0 && i === j) al[j] = s; else if (i === j) al[j] += s; }
+      for (let i = 0; i <= j; i++) { const Vi = V[i], hi = h[i]; for (let a = 0; a < n; a++) w[a] -= hi * Vi[a]; }
+    }
+    let b = 0; for (let a = 0; a < n; a++) b += w[a] * w[a]; b = Math.sqrt(b);
+    const m = j + 1;
+    const lucky = b < 1e-12 * Math.max(1, Math.abs(al[j]));
+    if (lucky || m >= nextCheck || m === maxM || m === n) {
+      const { d, Z } = tql2(al.slice(0, m), be.slice(0, m), [0, m - 1]);
+      bound = lucky ? 0 : nrm * b * residualIntegral(Z, d, m, tmax);
+      // Constant source f = dripScale·u0: u(t) = ∫_0^t e^{-sA} f ds, residual ‖f‖ β_m |e_m^T T^{-1}(I - e^{-tT}) e_1|
+      if (opts.dripScale) boundDrip = lucky ? 0 : nrm * opts.dripScale * b * residualIntegral(Z, d, m, opts.dripTmax || tmax, true);
+      if (onProgress) onProgress(m, bound);
+      if (lucky || Math.max(bound, boundDrip) <= tol || m === n) { exact = lucky || m === n; break; }
+      nextCheck = Math.ceil(m * 1.15) + 4;
+    }
+    be.push(b);
+    const vn = new Float64Array(n); for (let a = 0; a < n; a++) vn[a] = w[a] / b;
+    V.push(vn);
+    if (shouldAbort && (j % yieldEvery === yieldEvery - 1)) {
+      await new Promise(r => setTimeout(r, 0));
+      if (shouldAbort()) return null;
+    }
+  }
+  const m = al.length;
+  const { d: theta, Z: S } = tql2(al.slice(0, m), be.slice(0, m), null);
+  const c = new Float64Array(m); for (let k = 0; k < m; k++) c[k] = nrm * S[k]; // S row 0 = first components
+  const Vflat = new Float64Array(m * n); for (let i = 0; i < m; i++) Vflat.set(V[i], i * n);
+  return { m, n, theta, S, c, V: Vflat, bound, boundDrip, exact, base: mean };
+}
+
+// Evaluate u(t) on the compressed grid: u = V^T S (c ∘ e^{-tθ})
+function evalAt(sol, t, out, ywork) {
+  const { m, n, theta, S, c, V } = sol;
+  const g = new Float64Array(m);
+  for (let k = 0; k < m; k++) g[k] = c[k] * Math.exp(-t * Math.max(theta[k], 0));
+  const y = ywork || new Float64Array(m);
+  for (let i = 0; i < m; i++) { let s = 0; const o = i * m; for (let k = 0; k < m; k++) s += S[o + k] * g[k]; y[i] = s; }
+  out.fill(sol.base || 0);
+  for (let i = 0; i < m; i++) { const yi = y[i], o = i * n; if (yi === 0) continue; for (let a = 0; a < n; a++) out[a] += yi * V[o + a]; }
+  return out;
+}
+
+if (typeof module !== 'undefined') module.exports = { lineOfSight, buildLevySight, lgamma, zeta, dirichletBeta, fracConst, nnBoost, makeFFT, buildLevy, buildBrownian, component, tql2, lanczosExp, evalAt, phi1 };
+
+</script>
+<script id="maze-src">
+// Maze presets on a 13×13 tile grid (7×7 junctions). 1 = open corridor, 0 = wall.
+const TILES = 13;
+function fromRows(rows) {
+  const T = new Uint8Array(TILES * TILES);
+  rows.forEach((row, r) => { for (let c = 0; c < TILES; c++) T[r * TILES + c] = row[c] === '.' ? 1 : 0; });
+  return T;
+}
+const PRESETS = {
+  sealed: {
+    name: 'Sealed chambers',
+    rows: [
+      '.........#...',
+      '##.#######.##',
+      '...#.....#...',
+      '####.########',
+      '.....#...#.#.',
+      '##.#####.###.',
+      '.#...#.#.#...',
+      '.#.###.#####.',
+      '.#...#.###.#.',
+      '######.###.##',
+      '.....#...#...',
+      '########.####',
+      '.........#...',
+    ],
+    src: [2, 8], probe: [4, 10],
+  },
+  split: {
+    name: 'Split box',
+    rows: Array.from({ length: 13 }, () => '......#......'),
+    src: [6, 3], probe: [6, 9],
+  },
+};
+// Spiral: junctions visited in spiral order, consecutive ones joined
+function spiral() {
+  const n = 7, T = new Uint8Array(TILES * TILES), order = [];
+  let top = 0, bot = n - 1, left = 0, right = n - 1;
+  while (top <= bot && left <= right) {
+    for (let c = left; c <= right; c++) order.push([top, c]); top++;
+    for (let r = top; r <= bot; r++) order.push([r, right]); right--;
+    if (top <= bot) { for (let c = right; c >= left; c--) order.push([bot, c]); bot--; }
+    if (left <= right) { for (let r = bot; r >= top; r--) order.push([r, left]); left++; }
+  }
+  for (let i = 0; i < order.length; i++) {
+    const [r, c] = order[i]; T[2 * r * TILES + 2 * c] = 1;
+    if (i > 0) { const [pr, pc] = order[i - 1]; T[(r + pr) * TILES + (c + pc)] = 1; }
+  }
+  return T;
+}
+function randomMaze(seed) {
+  let st = seed >>> 0 || 1; const rnd = () => { st = (st * 1664525 + 1013904223) >>> 0; return st / 4294967296; };
+  const n = 7, T = new Uint8Array(TILES * TILES), vis = new Uint8Array(n * n), stack = [0]; vis[0] = 1;
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) T[2 * r * TILES + 2 * c] = 1;
+  while (stack.length) {
+    const cur = stack[stack.length - 1], r = Math.floor(cur / n), c = cur % n;
+    const opts = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(([dr, dc]) => { const R = r + dr, C = c + dc; return R >= 0 && R < n && C >= 0 && C < n && !vis[R * n + C]; });
+    if (!opts.length) { stack.pop(); continue; }
+    const [dr, dc] = opts[Math.floor(rnd() * opts.length)];
+    const R = r + dr, C = c + dc; vis[R * n + C] = 1; T[(2 * r + dr) * TILES + 2 * c + dc] = 1; stack.push(R * n + C);
+  }
+  return T;
+}
+function presetTiles(key, seed) {
+  if (key === 'spiral') return { T: spiral(), src: [0, 0], probe: [6, 6] };
+  if (key === 'maze') return { T: randomMaze(seed), src: [0, 0], probe: [6, 6] };
+  const P = PRESETS[key]; return { T: fromRows(P.rows), src: P.src, probe: P.probe };
+}
+// Expand tiles to the simulation grid: each tile is p×p cells
+function tilesToMask(T, p) {
+  const N = TILES * p, m = new Uint8Array(N * N);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) m[y * N + x] = T[Math.floor(y / p) * TILES + Math.floor(x / p)];
+  return { N, mask: m };
+}
+if (typeof module !== 'undefined') module.exports = { TILES, presetTiles, tilesToMask };
+
+</script>
+<script>
+(function () {
+'use strict';
+const WORKER_BODY = `
+const latest = {};
+self.onmessage = async (e) => {
+  const q = e.data; latest[q.kind] = q.job;
+  await new Promise(r => setTimeout(r, 0));
+  if (latest[q.kind] !== q.job) return;
+  const t0 = performance.now();
+  const { N, mask } = tilesToMask(q.tiles, q.p);
+  const p = q.p, srcCells = [];
+  for (let y = 0; y < p; y++) for (let x = 0; x < p; x++) srcCells.push((q.src[0] * p + y) * N + q.src[1] * p + x);
+  const absorb = q.mode === 'absorb', abort = () => latest[q.kind] !== q.job;
+  let op;
+  if (q.kind === 'brown') op = buildBrownian(mask, N, component(mask, N, srcCells[0]), absorb);
+  else if (q.mode === 'sight') {
+    self.postMessage({ type: 'progress', job: q.job, kind: q.kind, m: 0, phase: 'sight' });
+    op = await buildLevySight(mask, N, q.alpha, component(mask, N, srcCells[0]), abort);
+    if (!op) return;
+  } else op = buildLevy(mask, N, q.alpha, { absorb });
+  const where = new Int32Array(N * N).fill(-1); op.idx.forEach((c, a) => { where[c] = a; });
+  const u0 = new Float64Array(op.n); for (const c of srcCells) u0[where[c]] = 1 / (p * p);
+  const alpha = q.kind === 'brown' ? 2 : q.alpha;
+  const tmax = Math.pow(10, q.logTmax) * Math.pow(p, alpha);
+  // With absorbing walls the same Krylov basis also gives the constant-source solution
+  // (one walker per corridor time added at the ink tile); certify both.
+  const dripScale = absorb ? 1 / Math.pow(p, alpha) : 0;
+  const sol = await lanczosExp(op, u0, { tmax, tol: 1e-12, deflate: !absorb,
+    dripScale, dripTmax: Math.pow(10, q.dripLogTmax) * Math.pow(p, alpha),
+    shouldAbort: abort,
+    onProgress: (m, b) => self.postMessage({ type: 'progress', job: q.job, kind: q.kind, m, bound: b }) });
+  if (!sol) return;
+  const idx = Int32Array.from(op.idx);
+  self.postMessage({ type: 'done', job: q.job, kind: q.kind, key: q.key, N, p, alpha, idx, m: sol.m, n: sol.n,
+    theta: sol.theta, S: sol.S, c: sol.c, V: sol.V, base: sol.base, bound: sol.bound, boundDrip: sol.boundDrip || 0, dripScale, exact: sol.exact,
+    ms: performance.now() - t0 }, [idx.buffer, sol.theta.buffer, sol.S.buffer, sol.c.buffer, sol.V.buffer]);
+};`;
+const workerURL = URL.createObjectURL(new Blob([
+  document.getElementById('core-src').textContent, '\n',
+  document.getElementById('maze-src').textContent, '\n', WORKER_BODY], { type: 'text/javascript' }));
+const workers = { brown: new Worker(workerURL), levy: new Worker(workerURL) };
+
+let TMIN = -2, TMAX = 4;
+const DRIP_LOG_TMAX = 3;
+function useDrip() { return state.wallMode === 'absorb' && state.drip; }
+function timeRange() { return state.wallMode === 'absorb' ? (state.drip ? [-2, DRIP_LOG_TMAX] : [-3, 1.5]) : [-2, 4]; }
+// time factor for Ritz mode k at grid time t: decay of a single drop, or accumulation from a steady drip
+function timeFactor(s, t, th) { return useDrip() ? s.dripScale * phi1(t, th) : Math.exp(-t * th); }
+const state = { preset: 'sealed', seed: 11, tiles: null, src: [2, 8], probe: [4, 10], alpha: 1.0, p: 4,
+  logT: -0.5, decades: 4, tool: 'source', playing: false, geomVer: 0, wallMode: 'over', drip: true };
+const sols = { brown: null, levy: null };
+const jobs = { brown: 0, levy: 0 };
+const progress = { brown: null, levy: null };
+const curves = { brown: null, levy: null };
+let reach = null; // Uint8Array N*N: 1 = connected to source on foot
+const $ = (id) => document.getElementById(id);
+
+function keyFor(kind) {
+  const g = state.geomVer + '|' + state.src.join(',');
+  return kind === 'brown' ? g + '|' + (state.wallMode === 'absorb' ? 'A' : 'R') : g + '|' + state.alpha.toFixed(2) + '|' + state.wallMode;
+}
+function tau(alpha) { return Math.pow(state.p, alpha); }
+
+// ---------- colour ----------
+const STOPS = [[0, '#141829'], [0.16, '#2a1f57'], [0.36, '#652477'], [0.56, '#b0386a'], [0.74, '#e6683f'], [0.88, '#f6a95c'], [1, '#fdf2c8']];
+function hex(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
+const LUT = new Uint8Array(256 * 3);
+for (let i = 0; i < 256; i++) {
+  const v = i / 255; let k = 0; while (k < STOPS.length - 2 && v > STOPS[k + 1][0]) k++;
+  const [a, ca] = STOPS[k], [b, cb] = STOPS[k + 1], f = (v - a) / (b - a), A = hex(ca), B = hex(cb);
+  for (let j = 0; j < 3; j++) LUT[i * 3 + j] = Math.round(A[j] + (B[j] - A[j]) * f);
+}
+const WALL = hex('#262b3b'), HATCH = hex('#2e3446'), RIM = hex('#3c4359');
+
+// ---------- geometry / pixel maps ----------
+let geo = null;
+function buildGeometry() {
+  const p = state.p, { N, mask } = tilesToMask(state.tiles, p);
+  const k = Math.round(624 / N), S = N * k;
+  const pix = [], w = [], ci = [];
+  const base = new Uint8ClampedArray(S * S * 4);
+  for (let py = 0; py < S; py++) for (let px = 0; px < S; px++) {
+    const o = (py * S + px) * 4, cx = Math.floor(px / k), cy = Math.floor(py / k);
+    base[o + 3] = 255;
+    if (!mask[cy * N + cx]) {
+      // rim: wall pixel within 2px of an open cell
+      let rim = false;
+      for (const [dx, dy] of [[-2, 0], [2, 0], [0, -2], [0, 2]]) {
+        const qx = px + dx, qy = py + dy; if (qx < 0 || qy < 0 || qx >= S || qy >= S) continue;
+        if (mask[Math.floor(qy / k) * N + Math.floor(qx / k)]) rim = true;
+      }
+      const c = rim ? RIM : ((px + py) % 9 === 0 ? HATCH : WALL);
+      base[o] = c[0]; base[o + 1] = c[1]; base[o + 2] = c[2];
+      continue;
+    }
+    const fx = (px + 0.5) / k - 0.5, fy = (py + 0.5) / k - 0.5;
+    const x0 = Math.floor(fx), y0 = Math.floor(fy), ax = fx - x0, ay = fy - y0;
+    const cand = [[x0, y0, (1 - ax) * (1 - ay)], [x0 + 1, y0, ax * (1 - ay)], [x0, y0 + 1, (1 - ax) * ay], [x0 + 1, y0 + 1, ax * ay]];
+    let tot = 0; const loc = [];
+    for (const [x, y, ww] of cand) if (x >= 0 && y >= 0 && x < N && y < N && mask[y * N + x] && ww > 0) { loc.push([y * N + x, ww]); tot += ww; }
+    pix.push(o);
+    for (let j = 0; j < 4; j++) { const L = loc[j]; ci.push(L ? L[0] : loc[0][0]); w.push(L ? L[1] / tot : 0); }
+  }
+  geo = { N, mask, k, S, base, pix: Int32Array.from(pix), ci: Int32Array.from(ci), w: Float32Array.from(w), ver: state.geomVer, p };
+  for (const kind of ['brown', 'levy']) {
+    const cv = $('cv-' + kind); cv.width = S; cv.height = S;
+    geo['img_' + kind] = new ImageData(new Uint8ClampedArray(base), S, S);
+  }
+  // cells reachable on foot from the source tile
+  const comp = component(mask, N, (state.src[0] * p) * N + state.src[1] * p);
+  reach = new Uint8Array(N * N); for (const c of comp) reach[c] = 1;
+}
+
+// ---------- solving ----------
+function solve(kind) {
+  jobs[kind]++;
+  progress[kind] = { m: 0 };
+  workers[kind].postMessage({ job: jobs[kind], kind, key: keyFor(kind), tiles: state.tiles, p: state.p, alpha: state.alpha, src: state.src, mode: state.wallMode, logTmax: state.wallMode === 'absorb' ? 1.5 : 4, dripLogTmax: DRIP_LOG_TMAX });
+  updateBusy();
+}
+for (const kind of ['brown', 'levy']) {
+  workers[kind].onmessage = (e) => {
+    const r = e.data; if (r.job !== jobs[kind]) return;
+    if (r.type === 'progress') { progress[kind] = { m: r.m, bound: r.bound, phase: r.phase }; updateBusy(); return; }
+    progress[kind] = null;
+    r.y = new Float64Array(r.m); r.g = new Float64Array(r.m); r.u = new Float64Array(r.n);
+    r.field = new Float64Array(r.N * r.N);
+    sols[kind] = r;
+    computeCurve(kind);
+    updateBusy(); updateStatus(kind); draw();
+  };
+  workers[kind].onerror = (e) => { $('busy-' + kind).hidden = false; $('busy-' + kind).textContent = 'Solver error: ' + e.message; };
+}
+function valid(kind) { const s = sols[kind]; return s && s.key === keyFor(kind) && geo && s.N === geo.N; }
+function updateBusy() {
+  for (const kind of ['brown', 'levy']) {
+    const el = $('busy-' + kind), pr = progress[kind];
+    if (pr) { el.hidden = false; el.textContent = pr.m ? `Solving · Krylov dim ${pr.m} · bound ${fmtPlain(pr.bound)}` : pr.phase === 'sight' ? 'Tracing sight lines…' : 'Solving…'; }
+    else el.hidden = valid(kind);
+    if (!pr && !valid(kind)) el.textContent = 'Waiting…';
+  }
+}
+
+// u(t) on the solution's cell set, then scattered onto the grid
+function evalField(kind, T) {
+  const s = sols[kind], t = T * Math.pow(s.p, s.alpha), { m, n, theta, S, c, V, g, y, u, field, idx } = s;
+  for (let k = 0; k < m; k++) g[k] = c[k] * timeFactor(s, t, Math.max(theta[k], 0));
+  for (let i = 0; i < m; i++) { let acc = 0; const o = i * m; for (let k = 0; k < m; k++) acc += S[o + k] * g[k]; y[i] = acc; }
+  u.fill(s.base);
+  for (let i = 0; i < m; i++) { const yi = y[i], o = i * n; for (let a = 0; a < n; a++) u[a] += yi * V[o + a]; }
+  field.fill(0); let mass = 0;
+  for (let a = 0; a < n; a++) { field[idx[a]] = u[a]; mass += u[a]; }
+  s.mass = mass;
+  return field;
+}
+
+// Absolute 2-norm error we can vouch for: the Krylov bound, floored at the roundoff level.
+function certErr(kind) { const s = sols[kind]; return Math.max(useDrip() ? s.boundDrip : s.bound, 1e-14); }
+
+// probability in the probe tile as a function of T, from the spectral form
+function tileCells(tile) {
+  const p = state.p, N = geo.N, out = [];
+  for (let y = 0; y < p; y++) for (let x = 0; x < p; x++) out.push((tile[0] * p + y) * N + tile[1] * p + x);
+  return out;
+}
+function computeCurve(kind) {
+  if (!valid(kind)) { curves[kind] = null; return; }
+  const s = sols[kind], { m, n, S, c, V, theta, idx } = s;
+  const where = new Map(); for (let a = 0; a < n; a++) where.set(idx[a], a);
+  const cells = tileCells(state.probe).map(cc => where.get(cc)).filter(a => a !== undefined);
+  if (!cells.length) { curves[kind] = { zero: true }; return; }
+  const floor = 100 * certErr(kind) * state.p; // values below this are not certified
+  const pv = new Float64Array(m);
+  for (let i = 0; i < m; i++) { let acc = 0; const o = i * n; for (const a of cells) acc += V[o + a]; pv[i] = acc; }
+  const q = new Float64Array(m);
+  for (let k = 0; k < m; k++) { let acc = 0; for (let i = 0; i < m; i++) acc += pv[i] * S[i * m + k]; q[k] = acc * c[k]; }
+  const base = s.base * cells.length, pts = [];
+  const tscale = Math.pow(s.p, s.alpha);
+  for (let i = 0; i <= 300; i++) {
+    const lt = TMIN + (TMAX - TMIN) * i / 300, t = Math.pow(10, lt) * tscale;
+    let v = base; for (let k = 0; k < m; k++) v += q[k] * timeFactor(s, t, Math.max(theta[k], 0));
+    pts.push([lt, v > floor ? v : 0]);
+  }
+  curves[kind] = { pts };
+}
+
+// ---------- formatting ----------
+const SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+function fmtPlain(x) {
+  if (x === undefined || x === null || !isFinite(x)) return '–';
+  if (x === 0) return '0';
+  const e = Math.floor(Math.log10(Math.abs(x)));
+  if (e >= -2 && e < 3) return x.toPrecision(3);
+  const mant = x / Math.pow(10, e);
+  return mant.toFixed(1) + '×10' + String(e).split('').map(ch => SUP[ch]).join('');
+}
+function fmtVal(x) { return useDrip() ? (x < 1e-11 ? '< 10⁻¹¹' : fmtPlain(x)) : fmtProb(x); }
+function fmtProb(x) {
+  if (x < 1e-11) return '< 10⁻¹¹'; // below the solver's certified accuracy (exact zeros are labelled by the caller)
+  if (x >= 0.001) return (100 * x).toPrecision(3) + '%';
+  return fmtPlain(x);
+}
+
+// ---------- drawing ----------
+function drawPanel(kind, T) {
+  const cv = $('cv-' + kind), ctx = cv.getContext('2d'), img = geo['img_' + kind], d = img.data;
+  const { N, pix, ci, w, S, k } = geo, p = state.p;
+  const dec = state.decades;
+  const lv = new Float32Array(N * N);
+  let un = null, pr = null, alive = null, noteText = '';
+  if (valid(kind)) {
+    const f = evalField(kind, T), sol = sols[kind];
+    let area = p * p;
+    alive = sol.mass;
+    if (state.wallMode === 'absorb') {
+      const need = 1e3 * Math.sqrt(sol.n) * certErr(kind); // survivors must exceed this for a 0.1%-accurate picture
+      if (alive > need) area /= alive;
+      else { area = 0; noteText = useDrip() ? 'Too few walkers have been added yet to draw a certified picture.' : `Fewer than ${fmtPlain(need)} of the walkers remain. That is below what the solver certifies, so the survivors are not drawn.`; }
+    }
+    let unr = 0;
+    for (let i = 0; i < N * N; i++) {
+      const dens = f[i] * area;
+      lv[i] = dens > 0 ? Math.max(0, (Math.log10(dens) + dec) / dec) : 0;
+      if (geo.mask[i] && !reach[i]) unr += f[i];
+    }
+    un = unr; pr = tileCells(state.probe).reduce((acc, cc) => acc + f[cc], 0);
+  }
+  for (let j = 0; j < pix.length; j++) {
+    const b = j * 4;
+    const v = w[b] * lv[ci[b]] + w[b + 1] * lv[ci[b + 1]] + w[b + 2] * lv[ci[b + 2]] + w[b + 3] * lv[ci[b + 3]];
+    const li = Math.min(255, Math.max(0, Math.round(v * 255))) * 3, o = pix[j];
+    d[o] = LUT[li]; d[o + 1] = LUT[li + 1]; d[o + 2] = LUT[li + 2];
+  }
+  ctx.putImageData(img, 0, 0);
+  // markers
+  const tile = S / TILES;
+  const [sr, sc] = state.src, [qr, qc] = state.probe;
+  ctx.lineWidth = Math.max(2, tile * 0.07);
+  ctx.strokeStyle = 'rgba(8,10,20,0.85)';
+  ctx.beginPath(); ctx.arc((sc + 0.5) * tile, (sr + 0.5) * tile, tile * 0.36, 0, 2 * Math.PI); ctx.stroke();
+  ctx.lineWidth = Math.max(1.5, tile * 0.04); ctx.strokeStyle = '#f4f5fb';
+  ctx.beginPath(); ctx.arc((sc + 0.5) * tile, (sr + 0.5) * tile, tile * 0.36, 0, 2 * Math.PI); ctx.stroke();
+  const x0 = qc * tile + 3, y0 = qr * tile + 3, L = tile * 0.3, s = tile - 6;
+  ctx.strokeStyle = '#7fe0cf'; ctx.lineWidth = Math.max(2, tile * 0.05);
+  ctx.beginPath();
+  ctx.moveTo(x0, y0 + L); ctx.lineTo(x0, y0); ctx.lineTo(x0 + L, y0);
+  ctx.moveTo(x0 + s - L, y0); ctx.lineTo(x0 + s, y0); ctx.lineTo(x0 + s, y0 + L);
+  ctx.moveTo(x0 + s, y0 + s - L); ctx.lineTo(x0 + s, y0 + s); ctx.lineTo(x0 + s - L, y0 + s);
+  ctx.moveTo(x0 + L, y0 + s); ctx.lineTo(x0, y0 + s); ctx.lineTo(x0, y0 + s - L);
+  ctx.stroke();
+  // stats
+  const noteEl = $('note-' + kind); noteEl.hidden = !noteText; noteEl.textContent = noteText;
+  const aliveBox = $('alive-' + kind).parentElement; aliveBox.hidden = state.wallMode !== 'absorb';
+  if (state.wallMode === 'absorb') $('alive-' + kind).textContent = alive === null ? '–' : (noteText ? '< ' + fmtPlain(1e3 * Math.sqrt(sols[kind].n) * certErr(kind)) : fmtVal(alive));
+  const unEl = $('un-' + kind), prEl = $('pr-' + kind);
+  const sealed = geo.mask.some((v, i) => v && !reach[i]);
+  if (!sealed) unEl.innerHTML = '<span class="note">none in this maze</span>';
+  else if (kind === 'brown' || state.wallMode === 'sight') unEl.innerHTML = '0 <span class="note">exactly</span>';
+  else unEl.textContent = un === null ? '–' : fmtVal(Math.max(un, 0));
+  const probeReach = reach[tileCells(state.probe)[0]];
+  if ((kind === 'brown' || state.wallMode === 'sight') && !probeReach) prEl.innerHTML = '0 <span class="note">no path</span>';
+  else prEl.textContent = pr === null ? '–' : fmtVal(Math.max(pr, 0));
+  if (valid(kind)) $('s-mass-' + kind).textContent = state.wallMode === 'absorb' ? fmtPlain(sols[kind].mass) : fmtPlain(Math.abs(sols[kind].mass - 1));
+}
+
+function drawLegend() {
+  const cv = $('cbar'), ctx = cv.getContext('2d'), W = cv.width;
+  const im = ctx.createImageData(W, 12);
+  for (let x = 0; x < W; x++) { const li = Math.round(x / (W - 1) * 255) * 3; for (let y = 0; y < 12; y++) { const o = (y * W + x) * 4; im.data[o] = LUT[li]; im.data[o + 1] = LUT[li + 1]; im.data[o + 2] = LUT[li + 2]; im.data[o + 3] = 255; } }
+  ctx.putImageData(im, 0, 0);
+  const dec = state.decades, step = dec > 6 ? 2 : 1, parts = [];
+  for (let e = -dec; e <= 0; e += step) parts.push(`<span>${e === 0 ? '1' : '10' + String(e).split('').map(ch => SUP[ch]).join('')}</span>`);
+  $('cticks').innerHTML = parts.join('');
+}
+
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function drawChart() {
+  const cv = $('chart'), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const ink = cssVar('--ink'), muted = cssVar('--muted'), line = cssVar('--line');
+  const padL = 52, padR = 12, padT = 10, padB = 28, pw = W - padL - padR, ph = H - padT - padB;
+  let ymax = 0;
+  if (useDrip()) for (const k of ['brown', 'levy']) { const cu = curves[k]; if (cu && cu.pts) for (const [, v] of cu.pts) if (v > 0) ymax = Math.max(ymax, Math.ceil(Math.log10(v) - 1e-9)); }
+  const ymin = ymax - state.decades;
+  const X = lt => padL + (lt - TMIN) / (TMAX - TMIN) * pw, Y = ly => padT + (ymax - ly) / (ymax - ymin) * ph;
+  ctx.font = '11px "IBM Plex Mono", ui-monospace, monospace'; ctx.fillStyle = muted; ctx.strokeStyle = line; ctx.lineWidth = 1;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  for (let e = TMIN; e <= TMAX; e++) { const x = X(e); ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + ph); ctx.stroke(); ctx.fillText(e === 0 ? '1' : '10' + String(e).split('').map(ch => SUP[ch]).join(''), x, padT + ph + 8); }
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  const ystep = state.decades > 6 ? 2 : 1;
+  for (let e = ymax; e >= ymin; e -= ystep) { const y = Y(e); ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + pw, y); ctx.stroke(); ctx.fillText(e === 0 ? '1' : '10' + String(e).split('').map(ch => SUP[ch]).join(''), padL - 8, y); }
+  ctx.save(); ctx.beginPath(); ctx.rect(padL, padT, pw, ph); ctx.clip();
+  const notes = [];
+  for (const [kind, col] of [['brown', cssVar('--brown')], ['levy', cssVar('--levy')]]) {
+    const cu = curves[kind]; if (!cu || !cu.pts) continue;
+    ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.beginPath(); let pen = false;
+    for (const [lt, v] of cu.pts) {
+      if (!(v > Math.pow(10, ymin - 1))) { pen = false; continue; }
+      const x = X(lt), y = Y(Math.log10(v));
+      if (!pen) { ctx.moveTo(x, y); pen = true; } else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  // cursor
+  const xc = X(state.logT); ctx.strokeStyle = ink; ctx.globalAlpha = 0.5; ctx.setLineDash([3, 3]);
+  ctx.beginPath(); ctx.moveTo(xc, padT); ctx.lineTo(xc, padT + ph); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+  for (const [kind, col] of [['brown', cssVar('--brown')], ['levy', cssVar('--levy')]]) {
+    const cu = curves[kind]; if (!cu || !cu.pts) continue;
+    const i = Math.round((state.logT - TMIN) / (TMAX - TMIN) * 300), v = cu.pts[Math.max(0, Math.min(300, i))][1];
+    if (v > Math.pow(10, ymin)) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(xc, Y(Math.log10(v)), 4, 0, 2 * Math.PI); ctx.fill(); }
+  }
+  ctx.restore();
+  // note
+  const probeReach = geo && reach[tileCells(state.probe)[0]];
+  const noteEl = $('chart-note');
+  if (geo && !probeReach && state.wallMode === 'sight') noteEl.textContent = 'No straight line from the ink’s region reaches the probe’s chamber, so with line-of-sight jumps both curves are exactly zero for all time. Compare with the other wall modes.';
+  else if (useDrip()) noteEl.textContent = (geo && !probeReach ? 'The Brownian curve is exactly zero: no corridor leads to the probe. ' : '') + 'With a steady drip these are expected walker counts in the probe tile. Each curve rises and then levels off at the steady state, where walkers are added as fast as the walls absorb them.';
+  else if (state.wallMode === 'absorb') noteEl.textContent = (geo && !probeReach ? 'The Brownian curve is exactly zero: no corridor leads to the probe. ' : '') + 'With absorbing walls these are absolute probabilities, so both curves fall once walkers start dying on the walls. Lévy walkers still reach other corridors by jumping across walls, as long as they land in open space.';
+  else if (geo && !probeReach) noteEl.textContent = 'The probe sits in a chamber with no corridor leading to it from the ink drop, so the Brownian curve is exactly zero for all time. The Lévy curve starts rising immediately: at short times it grows in proportion to T, the signature of single long jumps straight over the walls.';
+  else if (state.wallMode === 'sight') noteEl.textContent = 'The probe is reachable on foot. With line-of-sight jumps, Lévy walkers can only shortcut along straight, unobstructed lines, so around corners they behave much more like Brownian walkers. At small α most long jumps are blocked and spreading can even be slower than Brownian.';
+  else noteEl.textContent = 'The probe is reachable on foot. Brownian probability stays negligible until the walking front arrives, then rises sharply. Lévy probability rises in proportion to T from the start, because single jumps cut across walls instead of following the corridor.';
+}
+
+let rafPending = false;
+function draw() {
+  if (rafPending) return; rafPending = true;
+  requestAnimationFrame(() => {
+    rafPending = false;
+    if (!geo || geo.ver !== state.geomVer) buildGeometry();
+    const T = Math.pow(10, state.logT);
+    drawPanel('brown', T); drawPanel('levy', T); drawChart();
+    $('t-read').textContent = 'T = ' + (T < 10 ? T.toFixed(T < 0.1 ? 3 : 2) : T < 1000 ? T.toFixed(0) : fmtPlain(T));
+  });
+}
+function updateStatus(kind) {
+  const s = sols[kind]; if (!s) return;
+  $('s-n-' + kind).textContent = s.n.toLocaleString();
+  $('s-m-' + kind).textContent = s.m + (s.exact ? ' (exact)' : '');
+  $('s-b-' + kind).textContent = s.exact ? 'invariant' : '≤ ' + fmtPlain(Math.max(useDrip() ? s.boundDrip : s.bound, 1e-15));
+  $('s-ms-' + kind).textContent = (s.ms / 1000).toFixed(2) + ' s';
+}
+
+// ---------- interaction ----------
+function setPreset(key, keepSeed) {
+  state.preset = key;
+  if (key === 'maze' && !keepSeed) state.seed = (Math.random() * 1e9) >>> 0;
+  const P = presetTiles(key, state.seed);
+  state.tiles = Uint8Array.from(P.T); state.src = P.src.slice(); state.probe = P.probe.slice();
+  state.geomVer++; buildGeometry();
+  $('reshuffle').hidden = key !== 'maze';
+  solve('brown'); solve('levy'); draw();
+}
+function segment(id, fn) {
+  const box = $(id);
+  box.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    box.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    fn(b.dataset.v);
+  });
+}
+const MODE = {
+  over: {
+    brown: 'α = 2 · reflecting walls', levy: 'jumps pass over walls', legend: 'Probability per tile',
+    hint: 'A jump may fly over any wall. Jumps that would end inside a wall are not made, so no ink is lost.',
+    text: `<p>Ω is the set of open corridor cells inside the box. The right panel evolves the <i>regional</i> fractional heat equation on Ω:</p>
+      <div class="eq">∂<i>u</i>/∂<i>t</i> = −(−Δ)<sup><i>α</i>/2</sup><sub>Ω</sub> <i>u</i>, &nbsp; (−Δ)<sup><i>α</i>/2</sup><sub>Ω</sub><i>u</i>(<i>x</i>) = <i>C</i><sub>2,<i>α</i></sub> p.v.∫<sub>Ω</sub> [<i>u</i>(<i>x</i>) − <i>u</i>(<i>y</i>)] / |<i>x</i> − <i>y</i>|<sup>2+<i>α</i></sup> d<i>y</i></div>
+      <p>with <span class="math">C</span><sub>2,α</sub> = 2<sup>α</sup>Γ(1+α/2) / (π|Γ(−α/2)|). This is the generator of a censored α-stable Lévy flight: a jump may pass over any wall, but a jump that would end inside a wall or outside the box is never made. Total probability is conserved. At α = 2 it becomes ∂u/∂t = Δu with no-flux walls, the left panel.</p>`,
+    space: '',
+  },
+  absorb: {
+    brown: 'α = 2 · absorbing walls', levy: 'walls absorb', legend: 'Probability per tile, among walkers not yet absorbed',
+    hint: 'A walker whose jump ends in a wall is removed. Jumps can still cross a wall and land in another corridor. Everything outside the corridors counts as wall, including beyond the box edge.',
+    text: `<p>Ω is the set of open corridor cells. With absorbing walls the right panel solves the fractional heat equation with a Dirichlet condition on everything outside Ω:</p>
+      <div class="eq">∂<i>u</i>/∂<i>t</i> = −(−Δ)<sup><i>α</i>/2</sup><i>u</i> in Ω, &nbsp; <i>u</i> = 0 on ℝ² \\ Ω, &nbsp; (−Δ)<sup><i>α</i>/2</sup><i>u</i>(<i>x</i>) = <i>C</i><sub>2,<i>α</i></sub> p.v.∫<sub>ℝ²</sub> [<i>u</i>(<i>x</i>) − <i>u</i>(<i>y</i>)] / |<i>x</i> − <i>y</i>|<sup>2+<i>α</i></sup> d<i>y</i></div>
+      <p>This is the killed α-stable Lévy flight: every jump is made, and the walker dies if it lands outside Ω. Probability leaks away, so the colours show where the <i>surviving</i> walkers are, rescaled by the surviving fraction. The left panel is ∂u/∂t = Δu with u = 0 on the walls.</p>
+      <p>With the steady drip, walkers are added at the ink tile at a constant rate <i>f</i> (one per corridor time), so the equation gains a source term and the solution is</p>
+      <div class="eq">∂<i>u</i>/∂<i>t</i> = −<i>Au</i> + <i>f</i>, &nbsp; <i>u</i>(0) = 0 &nbsp; ⇒ &nbsp; <i>u</i>(<i>t</i>) = <i>A</i><sup>−1</sup>(<i>I</i> − e<sup>−<i>tA</i></sup>)<i>f</i> &nbsp;→&nbsp; <i>A</i><sup>−1</sup><i>f</i></div>
+      <p>Absorption makes <i>A</i> positive definite, so the steady state <i>A</i><sup>−1</sup><i>f</i> exists. The same Krylov basis gives <i>u</i><sub>m</sub>(<i>t</i>) = ‖<i>f</i>‖<i>V</i><sub>m</sub><i>T</i><sub>m</sub><sup>−1</sup>(<i>I</i> − e<sup>−<i>tT</i><sub>m</sub></sup>)e<sub>1</sub>. Its residual is ‖<i>f</i>‖β<sub>m</sub>|e<sub>m</sub><sup>T</sup><i>T</i><sub>m</sub><sup>−1</sup>(<i>I</i> − e<sup>−<i>tT</i><sub>m</sub></sup>)e<sub>1</sub>|, and its time integral is held below 10<sup>−12</sup> up to T = 1000.</p>`,
+    space: '<b>Absorption.</b> A cell’s killing rate is the total jump rate on the infinite lattice, 4<span class="math">C</span>ζ(1+α/2)β(1+α/2) + 4δ in closed form, minus the rate of jumps that land in Ω. The nearest-neighbour term puts the Dirichlet condition at the wall face, which matches the Brownian panel exactly at α = 2. Absorbing solutions behave like <span class="math">d</span><sup>α/2</sup> near a wall, so this mode converges more slowly in space: going from 4 to 8 cells per corridor changes the surviving fraction at T = 1 by about 10% for α = 1. Use the 6-cell grid when the numbers matter.',
+  },
+  sight: {
+    brown: 'α = 2 · reflecting walls', levy: 'jumps need a clear line of sight', legend: 'Probability per tile',
+    hint: 'A jump is made only if the straight path to its landing point touches no wall. Blocked jumps are not made, so no ink is lost and sealed chambers stay empty.',
+    text: `<p>Ω is the set of open corridor cells. With line-of-sight jumps the right panel uses the regional operator restricted to the points visible from <i>x</i>:</p>
+      <div class="eq">∂<i>u</i>/∂<i>t</i> = −(−Δ)<sup><i>α</i>/2</sup><sub>Ω,vis</sub> <i>u</i>, &nbsp; (−Δ)<sup><i>α</i>/2</sup><sub>Ω,vis</sub><i>u</i>(<i>x</i>) = <i>C</i><sub>2,<i>α</i></sub> p.v.∫<sub><i>V</i>(<i>x</i>)</sub> [<i>u</i>(<i>x</i>) − <i>u</i>(<i>y</i>)] / |<i>x</i> − <i>y</i>|<sup>2+<i>α</i></sup> d<i>y</i></div>
+      <p>where <i>V</i>(<i>x</i>) is the set of points <i>y</i> in Ω for which the segment from <i>x</i> to <i>y</i> touches no wall. Visibility is symmetric, so the operator is still self-adjoint and conserves probability. The process stays nonlocal, but it can only cut corners along straight sightlines.</p>`,
+    space: '<b>Visibility.</b> A pair of cells interacts only if the closed segment between their centres misses every wall square, including grazing a wall corner. This is an exact integer test, cross-checked against an independent geometric test. Visibility is resolved at cell centres, so this mode also converges more slowly: from 4 to 6 cells per corridor, probe values move by 1–2% at α = 1.6 and about 10% at α = 0.6.',
+  },
+};
+function applyMode() {
+  const M = MODE[state.wallMode];
+  $('brown-sub').textContent = M.brown;
+  $('levy-sub').textContent = `α = ${state.alpha.toFixed(2)} · ${M.levy}`;
+  $('legend-lab').textContent = useDrip() ? 'Share of the walkers present, per tile' : M.legend;
+  $('drip-box').hidden = state.wallMode !== 'absorb';
+  $('drip-hint').textContent = state.drip ? 'One walker is added at the ink tile every corridor time, forever. Readouts are expected walker counts.' : 'One unit of ink is released at T = 0 and nothing more is added.';
+  for (const k of ['brown', 'levy']) $('alive-lab-' + k).textContent = useDrip() ? 'Walkers present' : 'Not yet absorbed';
+  if (state.wallMode === 'absorb') { $('brown-sub').textContent = M.brown + (state.drip ? ' · steady drip' : ''); }
+  $('wall-hint').textContent = M.hint;
+  $('mode-text').innerHTML = M.text;
+  const sp = $('mode-space'); sp.innerHTML = M.space; sp.hidden = !M.space;
+  $('mass-lab').textContent = state.wallMode === 'absorb' ? (state.drip ? 'Walkers present now' : 'Surviving mass now') : '|mass − 1| now';
+  [TMIN, TMAX] = timeRange();
+  const tr = $('time'); tr.min = TMIN; tr.max = TMAX;
+  state.logT = Math.min(TMAX, Math.max(TMIN, state.logT)); tr.value = state.logT;
+}
+segment('wallmode', v => {
+  const wasAbsorb = state.wallMode === 'absorb';
+  state.wallMode = v; applyMode();
+  if (wasAbsorb !== (v === 'absorb')) { solve('brown'); curves.brown = null; }
+  else computeCurve('brown');
+  solve('levy'); curves.levy = null; updateBusy(); draw();
+});
+
+segment('drip', v => {
+  state.drip = v === '1'; applyMode();
+  computeCurve('brown'); computeCurve('levy'); updateStatus('brown'); updateStatus('levy'); draw();
+});
+segment('preset', v => setPreset(v));
+$('reshuffle').addEventListener('click', () => setPreset('maze'));
+segment('tool', v => { state.tool = v; });
+segment('decades', v => { state.decades = +v; drawLegend(); draw(); });
+segment('grid', v => { state.p = +v; state.geomVer++; buildGeometry(); solve('brown'); solve('levy'); draw(); });
+
+let alphaTimer = null;
+$('alpha').addEventListener('input', (e) => {
+  state.alpha = +e.target.value;
+  $('alpha-out').textContent = state.alpha.toFixed(2);
+  $('levy-sub').textContent = `α = ${state.alpha.toFixed(2)} · ${MODE[state.wallMode].levy}`;
+  clearTimeout(alphaTimer); alphaTimer = setTimeout(() => solve('levy'), 220);
+  updateBusy(); draw();
+});
+$('time').addEventListener('input', (e) => { state.logT = +e.target.value; draw(); });
+
+const PLAY = '<path d="M4 2.5v11l9.5-5.5z"/>', PAUSE = '<path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/>';
+let last = 0;
+function tick(ts) {
+  if (!state.playing) return;
+  const dt = last ? Math.min(0.1, (ts - last) / 1000) : 0; last = ts;
+  state.logT = Math.min(TMAX, state.logT + dt * 0.42);
+  $('time').value = state.logT; draw();
+  if (state.logT >= TMAX) { setPlaying(false); return; }
+  requestAnimationFrame(tick);
+}
+function setPlaying(on) {
+  state.playing = on; $('play-ic').innerHTML = on ? PAUSE : PLAY; $('play').setAttribute('aria-label', on ? 'Pause' : 'Play');
+  if (on) { if (state.logT >= TMAX - 0.01) state.logT = TMIN; last = 0; requestAnimationFrame(tick); }
+}
+$('play').addEventListener('click', () => setPlaying(!state.playing));
+
+function tileAt(cv, e) {
+  const r = cv.getBoundingClientRect();
+  const c = Math.floor((e.clientX - r.left) / r.width * TILES), rr = Math.floor((e.clientY - r.top) / r.height * TILES);
+  return (c < 0 || rr < 0 || c >= TILES || rr >= TILES) ? null : [rr, c];
+}
+const same = (a, b) => a[0] === b[0] && a[1] === b[1];
+let painting = false, painted = false;
+function paint(t) {
+  if (same(t, state.src) || same(t, state.probe)) return;
+  const v = state.tool === 'open' ? 1 : 0, i = t[0] * TILES + t[1];
+  if (state.tiles[i] === v) return;
+  state.tiles[i] = v; painted = true; state.geomVer++; buildGeometry(); updateBusy(); draw();
+}
+function hoverRead(t) {
+  if (!t || !geo) return;
+  const open = state.tiles[t[0] * TILES + t[1]];
+  if (!open) { $('hover').textContent = `Tile (${t[0]}, ${t[1]}): wall`; return; }
+  const cells = tileCells(t), T = Math.pow(10, state.logT), parts = [];
+  for (const kind of ['brown', 'levy']) {
+    if (!valid(kind)) { parts.push('–'); continue; }
+    const structuralZero = !reach[cells[0]] && (kind === 'brown' || state.wallMode === 'sight');
+    const f = sols[kind].field; parts.push(structuralZero ? '0' : fmtVal(Math.max(0, cells.reduce((a, c) => a + f[c], 0))));
+  }
+  const onFoot = reach[cells[0]] ? 'reachable on foot' : 'sealed off from the ink';
+  $('hover').textContent = `Tile (${t[0]}, ${t[1]}), ${onFoot} · Brownian ${parts[0]} · Lévy ${parts[1]}`;
+}
+for (const kind of ['brown', 'levy']) {
+  const cv = $('cv-' + kind);
+  cv.addEventListener('pointerdown', (e) => {
+    const t = tileAt(cv, e); if (!t) return;
+    const open = state.tiles[t[0] * TILES + t[1]];
+    if (state.tool === 'source' && open && !same(t, state.src)) {
+      state.src = t; state.geomVer++; buildGeometry(); solve('brown'); solve('levy'); draw();
+    } else if (state.tool === 'probe' && open) {
+      state.probe = t; computeCurve('brown'); computeCurve('levy'); draw();
+    } else if (state.tool === 'wall' || state.tool === 'open') {
+      painting = true; painted = false; cv.setPointerCapture(e.pointerId); paint(t);
+    }
+  });
+  cv.addEventListener('pointermove', (e) => {
+    const t = tileAt(cv, e); if (painting && t) paint(t); hoverRead(t);
+  });
+  const end = () => {
+    if (!painting) return; painting = false;
+    if (painted) { solve('brown'); solve('levy'); }
+  };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+}
+window.addEventListener('resize', () => draw());
+if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => draw());
+new MutationObserver(() => draw()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+applyMode();
+drawLegend();
+setPreset('sealed', true);
+})();
+</script>
+
+<footer>Heather Wilber · University of Washington</footer>
+
+<script>
+const toggle = document.getElementById('themeToggle');
+const icon = document.getElementById('themeIcon');
+const label = document.getElementById('themeLabel');
+const html = document.documentElement;
+const saved = (() => { try { return localStorage.getItem('theme'); } catch(e) { return null; } })()
+  || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+setTheme(saved);
+function setTheme(t) {
+  html.setAttribute('data-theme', t);
+  icon.textContent = t === 'dark' ? '●' : '○';
+  label.textContent = t === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('theme', t); } catch(e) {}
+}
+toggle.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+</script>
+</body>
+</html>
